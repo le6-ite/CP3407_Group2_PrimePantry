@@ -1,0 +1,105 @@
+{% extends "base_shell.html" %}
+{% block title %}Checkout — PrimePantry{% endblock %}
+{% block head %}
+<style>
+.checkout-grid{display:grid;grid-template-columns:1fr 340px;gap:43px;align-items:start;}
+@media (max-width:860px){.checkout-grid{grid-template-columns:1fr;}}
+.co-input{width:100%;box-sizing:border-box;padding:14px 16px;border:1px solid #dddddd;font-size:13px;font-family:'Jost',sans-serif;color:#212123;outline:none;}
+.co-input:focus{border-color:#212123;}
+.co-input::placeholder{color:#c4c4c4;}
+.fulfil input{display:none;}
+.fulfil-box{border:1px solid #dddddd;padding:14px 16px;cursor:pointer;}
+.fulfil-box .t{font-size:13px;color:#999999;}
+.fulfil-box .s{font-size:12px;color:#999999;margin-top:2px;}
+.fulfil input:checked + .fulfil-box{border-color:#212123;}
+.fulfil input:checked + .fulfil-box .t{color:#212123;}
+</style>
+{% endblock %}
+{% block shell %}
+<main style="max-width:1200px;margin:0 auto;padding:43px 34px 96px;">
+  <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:0 0 34px;font-weight:400;">Checkout</h1>
+  {% if error %}
+  <div style="border:1px solid #212123;padding:12px 16px;margin-bottom:23px;font-size:13px;color:#212123;">{{ error }}</div>
+  {% endif %}
+  <form method="post" action="{% url 'store:checkout_pay' %}">
+    {% csrf_token %}
+    <div class="checkout-grid">
+      <div style="display:flex;flex-direction:column;gap:34px;">
+        <section>
+          <h2 style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;margin:0 0 14px;font-weight:400;">Fulfilment</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:14px;">
+            <label class="fulfil">
+              <input type="radio" name="fulfilment" value="pickup" {% if form.fulfilment != "delivery" %}checked{% endif %} onchange="coFulfil()">
+              <div class="fulfil-box"><div class="t">Pickup</div><div class="s">Free</div></div>
+            </label>
+            <label class="fulfil">
+              <input type="radio" name="fulfilment" value="delivery" {% if form.fulfilment == "delivery" %}checked{% endif %} onchange="coFulfil()">
+              <div class="fulfil-box"><div class="t">Delivery</div><div class="s">${{ delivery_fee|floatformat:"2" }}</div></div>
+            </label>
+          </div>
+          <div id="co-pickup" style="font-size:13px;color:#212123;line-height:1.6;">
+            <strong>PrimePantry Hub</strong> — 42 Wharf St, Brisbane QLD 4000<br>
+            Ready for pickup: Saturday, 10:00 AM – 2:00 PM
+          </div>
+          <div id="co-delivery" style="display:none;">
+            <input class="co-input" name="address" value="{{ form.address }}" placeholder="Delivery address" style="margin-bottom:9px;">
+          </div>
+        </section>
+        <section>
+          <h2 style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;margin:0 0 14px;font-weight:400;">Contact</h2>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px;">
+            <input class="co-input" name="full_name" value="{{ form.full_name }}" placeholder="Full name" required>
+            <input class="co-input" name="phone" value="{{ form.phone }}" placeholder="Phone">
+          </div>
+          <input class="co-input" type="email" name="email" value="{{ form.email }}" placeholder="Email address" required>
+        </section>
+        <section>
+          <h2 style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;margin:0 0 14px;font-weight:400;">Payment <span style="color:#cccccc;text-transform:none;letter-spacing:0;">(test mode)</span></h2>
+          <div style="border:1px solid #dddddd;padding:16px;font-size:13px;color:#212123;line-height:1.7;">
+            Secure payment by Stripe. Press <strong>Place order</strong> to pay on Stripe's test checkout — use card <strong>4242&nbsp;4242&nbsp;4242&nbsp;4242</strong>, any future expiry, any CVC.
+          </div>
+        </section>
+      </div>
+      <aside style="border:1px solid #ececec;padding:34px;">
+        <div style="display:flex;flex-direction:column;gap:9px;margin-bottom:18px;">
+          {% for l in lines %}
+          <div style="display:flex;justify-content:space-between;gap:12px;font-size:13px;color:#212123;">
+            <span>{{ l.product.name }}{% if l.product.size_label %} · {{ l.product.size_label }}{% endif %} ×{{ l.qty }}</span>
+            <span style="white-space:nowrap;">${{ l.line_total|floatformat:"2" }}</span>
+          </div>
+          {% endfor %}
+        </div>
+        <div style="height:1px;background:#ececec;margin-bottom:18px;"></div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#212123;margin-bottom:9px;">
+          <span>Subtotal</span><span>${{ subtotal|floatformat:"2" }}</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:13px;color:#212123;margin-bottom:18px;">
+          <span>Delivery</span><span id="co-fee">$0.00</span>
+        </div>
+        <div style="height:1px;background:#ececec;margin-bottom:18px;"></div>
+        <div style="display:flex;justify-content:space-between;font-size:18px;color:#212123;margin-bottom:23px;">
+          <span>Total</span><span id="co-total">${{ subtotal|floatformat:"2" }}</span>
+        </div>
+        <button type="submit" style="width:100%;text-align:center;padding:14px;border-radius:50px;background:#212123;color:#fff;border:none;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;">Place order</button>
+      </aside>
+    </div>
+  </form>
+</main>
+{% endblock %}
+{% block shell_scripts %}
+<script>
+(function () {
+  var subtotal = {{ subtotal|floatformat:"2" }};
+  var fee = {{ delivery_fee|floatformat:"2" }};
+  window.coFulfil = function () {
+    var delivery = document.querySelector('input[name="fulfilment"]:checked').value === "delivery";
+    document.getElementById("co-pickup").style.display = delivery ? "none" : "block";
+    document.getElementById("co-delivery").style.display = delivery ? "block" : "none";
+    var d = delivery ? fee : 0;
+    document.getElementById("co-fee").textContent = "$" + d.toFixed(2);
+    document.getElementById("co-total").textContent = "$" + (subtotal + d).toFixed(2);
+  };
+  coFulfil();
+})();
+</script>
+{% endblock %}

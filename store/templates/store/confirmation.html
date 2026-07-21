@@ -1,0 +1,20 @@
+{% extends "base_shell.html" %}
+{% block title %}Order confirmed — PrimePantry{% endblock %}
+{% block shell %}
+<main style="max-width:560px;margin:0 auto;padding:96px 34px 120px;text-align:center;">
+  <div style="width:56px;height:56px;border-radius:50%;border:1px solid #212123;display:flex;align-items:center;justify-content:center;margin:0 auto 34px;">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#212123" stroke-width="2"><path d="M5 13l4 4L19 7"/></svg>
+  </div>
+  <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:0 0 14px;font-weight:400;">Thanks — your order is in</h1>
+  <p style="color:#999999;font-size:13px;margin:0 0 9px;">Order <span style="color:#212123;">#{{ order.number }}</span></p>
+  <p style="color:#212123;font-size:14px;line-height:1.6;max-width:420px;margin:23px auto 43px;">
+    Your order is pooled with the rest of the neighbourhood's this week. We'll pack it Friday
+    {% if order.fulfilment == "delivery" %}and deliver it to {{ order.address }} over the weekend.{% else %}and it'll be ready for pickup Saturday, 10am–2pm.{% endif %}
+    A receipt has been sent to {{ order.email }}.
+  </p>
+  <div style="display:flex;gap:9px;justify-content:center;flex-wrap:wrap;">
+    <a href="{% url 'store:my_orders' %}" style="padding:14px 26px;border-radius:50px;background:#212123;color:#fff;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">View order status</a>
+    <a href="{% url 'store:catalog' %}" style="padding:14px 26px;border-radius:50px;border:1px solid #212123;color:#212123;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Continue shopping</a>
+  </div>
+</main>
+{% endblock %}

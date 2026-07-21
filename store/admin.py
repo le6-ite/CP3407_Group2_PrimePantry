@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Product
+from .models import Category, Order, OrderItem, Product
 
 
 @admin.register(Category)
@@ -17,3 +17,23 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ("price", "is_popular", "is_active")
     search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
+
+
+class OrderItemInline(admin.TabularInline):
+    model = OrderItem
+    extra = 0
+    readonly_fields = ("product", "name", "size_label", "unit_price", "quantity")
+    can_delete = False
+
+
+@admin.register(Order)
+class OrderAdmin(admin.ModelAdmin):
+    list_display = ("number", "full_name", "status", "fulfilment", "total", "created_at")
+    list_filter = ("status", "fulfilment", "round_cutoff")
+    search_fields = ("full_name", "email", "stripe_session_id")
+    readonly_fields = ("stripe_session_id", "created_at", "subtotal", "total")
+    inlines = [OrderItemInline]
+
+    @admin.display(description="Order")
+    def number(self, obj):
+        return obj.number

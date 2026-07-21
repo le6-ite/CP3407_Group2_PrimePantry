@@ -68,3 +68,58 @@ class Product(models.Model):
     @property
     def from_price(self):
         return self.price
+
+
+class Order(models.Model):
+    PENDING = "pending"
+    PAID = "paid"
+    CANCELLED = "cancelled"
+    STATUS_CHOICES = [(PENDING, "Pending"), (PAID, "Paid"), (CANCELLED, "Cancelled")]
+
+    PICKUP = "pickup"
+    DELIVERY = "delivery"
+    FULFILMENT_CHOICES = [(PICKUP, "Pickup"), (DELIVERY, "Delivery")]
+
+    full_name = models.CharField(max_length=120)
+    email = models.EmailField()
+    phone = models.CharField(max_length=40, blank=True)
+    fulfilment = models.CharField(
+        max_length=10, choices=FULFILMENT_CHOICES, default=PICKUP
+    )
+    address = models.CharField(max_length=255, blank=True)
+    note = models.TextField(blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default=PENDING)
+    subtotal = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    delivery_fee = models.DecimalField(max_digits=6, decimal_places=2, default=0)
+    total = models.DecimalField(max_digits=10, decimal_places=2, default=0)
+    round_cutoff = models.DateTimeField(null=True, blank=True)
+    stripe_session_id = models.CharField(max_length=255, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-created_at"]
+
+    def __str__(self):
+        return self.number
+
+    @property
+    def number(self):
+        return f"PP-{self.pk:05d}" if self.pk else "PP-—"
+
+
+class OrderItem(models.Model):
+    order = models.ForeignKey(Order, on_delete=models.CASCADE, related_name="items")
+    product = models.ForeignKey(
+        Product, on_delete=models.SET_NULL, null=True, blank=True
+    )
+    name = models.CharField(max_length=200)
+    size_label = models.CharField(max_length=40, blank=True)
+    unit_price = models.DecimalField(max_digits=8, decimal_places=2)
+    quantity = models.PositiveIntegerField(default=1)
+
+    def __str__(self):
+        return f"{self.quantity} × {self.name}"
+
+    @property
+    def line_total(self):
+        return self.unit_price * self.quantity
