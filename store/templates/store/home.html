@@ -1,0 +1,70 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}PrimePantry — a curated food group-buying platform{% endblock %}
+{% block content %}
+<section style="position:relative;display:grid;grid-template-columns:1fr 1fr;min-height:92vh;background:#fff;">
+  <div style="position:absolute;top:34px;left:34px;font-size:11px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;color:#212123;z-index:2;">PrimePantry</div>
+  <div style="overflow:hidden;">
+    <img src="{% static 'store/assets/hero-ribs.png' %}" style="width:100%;height:100%;object-fit:cover;" alt="Smoked short rib slices">
+  </div>
+  <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 72px;gap:23px;">
+    <div style="font-size:14px;line-height:1.4;letter-spacing:1.5px;text-transform:uppercase;color:#999999;max-width:340px;">A curated food group-buying platform — window closes {{ cutoff_label }}, <span id="countdown" data-cutoff="{{ cutoff_ms }}">{{ countdown_text }}</span> left</div>
+    <a href="{% url 'store:catalog' %}" style="font-size:11px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;color:#a6a6a7;">Shop the weekly drop →</a>
+  </div>
+</section>
+<div style="width:100%;height:75vh;overflow:hidden;">
+  <img src="{% static 'store/assets/hero-medallions.png' %}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(35%);" alt="Filet medallions on paper">
+</div>
+<section style="padding:96px 34px 0;position:relative;">
+  <h2 style="font-size:18px;line-height:1.5;color:#212123;margin:0 0 43px;font-weight:400;">Popular this week</h2>
+  <a href="{% url 'store:catalog' %}" style="position:absolute;top:96px;right:34px;display:inline-flex;align-items:center;gap:6px;border:1px solid #212123;border-radius:50px;padding:14px 23px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">View all ⌄</a>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px;">
+    {% for p in popular_products %}
+    <a href="{{ p.get_absolute_url }}">
+      <div style="aspect-ratio:1/1;overflow:hidden;border-radius:8px;background:#f2f2f2;">
+        <img src="{{ p.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt="{{ p.name }}">
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:baseline;margin-top:9px;gap:12px;">
+        <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">{{ p.name }}{% if p.is_popular %} · Popular{% endif %}</span>
+        <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#a6a6a7;white-space:nowrap;">${{ p.from_price|floatformat:"0" }}</span>
+      </div>
+    </a>
+    {% empty %}
+    <p style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#a6a6a7;">No products yet — add some in the admin.</p>
+    {% endfor %}
+  </div>
+</section>
+<section style="padding:96px 34px;">
+  <h2 style="font-size:18px;line-height:1.5;color:#212123;margin:0 0 43px;font-weight:400;">Shop by collection</h2>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:34px;">
+    {% for c in collections %}
+    <a href="{{ c.category.get_absolute_url }}">
+      <div style="aspect-ratio:16/10;overflow:hidden;border-radius:8px;">
+        <img src="{{ c.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt="{{ c.category.name }}">
+      </div>
+      <div style="margin-top:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">{{ c.category.name }}</div>
+    </a>
+    {% endfor %}
+  </div>
+</section>
+{% include "store/partials/site_footer.html" with active_nav="home" %}
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var el = document.getElementById("countdown");
+  if (!el) return;
+  var cutoff = parseInt(el.getAttribute("data-cutoff"), 10);
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function tick() {
+    var diff = Math.max(0, cutoff - Date.now());
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    el.textContent = d + "d " + pad(h) + "h " + pad(m) + "m";
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+{% endblock %}

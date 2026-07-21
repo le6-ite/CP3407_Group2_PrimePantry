@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+staticfiles/
+*.log
+
+# Local env
+.env
+
+# Image originals (heavy, not served — keep out of the repo)
+_image_originals/
+
+# OS
+.DS_Store

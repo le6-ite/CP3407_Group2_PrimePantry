@@ -1,0 +1,9 @@
+<div style="background:#fff;border-bottom:1px solid #ececec;">
+  <div style="max-width:1320px;margin:0 auto;padding:14px 34px;display:flex;align-items:center;justify-content:center;gap:9px;flex-wrap:wrap;font-size:11px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;color:#999999;text-align:center;">
+    <span>Window closes {{ ow_cutoff_label }}</span>
+    <span>·</span>
+    <span><span id="ow-countdown" data-cutoff="{{ ow_cutoff_ms }}">{{ ow_countdown_text }}</span> left</span>
+    <span>·</span>
+    <a href="{% url 'store:catalog' %}" style="color:#212123;">Shop now →</a>
+  </div>
+</div>

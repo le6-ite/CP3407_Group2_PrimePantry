@@ -1,0 +1,53 @@
+{% extends "base_shell.html" %}
+{% load static %}
+{% block title %}Catalog — PrimePantry{% endblock %}
+{% block shell %}
+<div style="width:100%;height:42vh;overflow:hidden;">
+  <img src="{% static 'store/assets/hero-medallions.png' %}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(15%);" alt="Premium cuts">
+</div>
+<main style="max-width:1320px;margin:0 auto;padding:43px 34px 0;">
+  <section style="display:flex;gap:23px;align-items:center;padding-bottom:43px;flex-wrap:wrap;">
+    <form method="get" action="{% url 'store:catalog' %}" style="flex:1;min-width:220px;display:flex;">
+      {% if active_cat %}<input type="hidden" name="cat" value="{{ active_cat }}">{% endif %}
+      <input name="q" value="{{ q }}" placeholder="Search products…" style="flex:1;padding:12px 0;border:none;border-bottom:1px solid #212123;font-size:13px;font-family:'Jost',sans-serif;color:#212123;background:none;outline:none;">
+    </form>
+    <div style="display:flex;gap:9px;flex-wrap:wrap;">
+      {% if not active_cat %}
+        <span style="padding:11px 20px;border-radius:50px;background:#212123;color:#fff;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;">All</span>
+      {% else %}
+        <a href="{% url 'store:catalog' %}{% if q %}?q={{ q|urlencode }}{% endif %}" style="padding:11px 20px;border-radius:50px;background:none;border:1px solid #999999;color:#999999;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;">All</a>
+      {% endif %}
+      {% for c in categories %}
+        {% if active_cat == c.slug %}
+          <span style="padding:11px 20px;border-radius:50px;background:#212123;color:#fff;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;">{{ c.name }}</span>
+        {% else %}
+          <a href="{% url 'store:catalog' %}?cat={{ c.slug }}{% if q %}&q={{ q|urlencode }}{% endif %}" style="padding:11px 20px;border-radius:50px;background:none;border:1px solid #999999;color:#999999;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;">{{ c.name }}</a>
+        {% endif %}
+      {% endfor %}
+    </div>
+  </section>
+  {% for s in sections %}
+  <section style="padding-bottom:63px;">
+    <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:34px;">
+      <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">{{ s.number }}</span>
+      <h2 style="font-size:18px;line-height:1.5;color:#212123;margin:0;font-weight:400;">{{ s.category.name }}</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:34px;">
+      {% for p in s.products %}
+      <a href="{{ p.get_absolute_url }}">
+        <div style="aspect-ratio:1/1;overflow:hidden;border-radius:8px;background:#f2f2f2;">
+          <img src="{{ p.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt="{{ p.name }}" loading="lazy">
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:9px;">
+          <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">{{ p.name }}{% if p.is_popular %} · Popular{% endif %}</span>
+          <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#a6a6a7;white-space:nowrap;">${{ p.price|floatformat:"0" }}</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% empty %}
+  <p style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;padding-bottom:63px;">No products match “{{ q }}”.</p>
+  {% endfor %}
+</main>
+{% endblock %}

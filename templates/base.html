@@ -1,0 +1,23 @@
+{% load static %}<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% block title %}PrimePantry{% endblock %}</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Jost:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;}
+body{margin:0;background:#fff;color:#212123;font-family:'Jost',ui-sans-serif,system-ui,sans-serif;-webkit-font-smoothing:antialiased;}
+a{color:#212123;text-decoration:none;}
+a:hover{text-decoration:underline;}
+img{display:block;}
+</style>
+{% block head %}{% endblock %}
+</head>
+<body>
+{% block content %}{% endblock %}
+{% block scripts %}{% endblock %}
+</body>
+</html>

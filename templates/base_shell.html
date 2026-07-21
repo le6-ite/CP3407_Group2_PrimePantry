@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+{% include "store/partials/site_header.html" %}
+{% include "store/partials/order_window_banner.html" %}
+{% block shell %}{% endblock %}
+{% include "store/partials/site_footer.html" %}
+{% endblock %}
+{% block scripts %}
+<script>
+(function () {
+  var el = document.getElementById("ow-countdown");
+  if (!el) return;
+  var cutoff = parseInt(el.getAttribute("data-cutoff"), 10);
+  function pad(n) { return String(n).padStart(2, "0"); }
+  function tick() {
+    var diff = Math.max(0, cutoff - Date.now());
+    var d = Math.floor(diff / 86400000);
+    var h = Math.floor((diff % 86400000) / 3600000);
+    var m = Math.floor((diff % 3600000) / 60000);
+    var s = Math.floor((diff % 60000) / 1000);
+    el.textContent = d + "d " + pad(h) + "h " + pad(m) + "m " + pad(s) + "s";
+  }
+  tick();
+  setInterval(tick, 1000);
+})();
+</script>
+{% block shell_scripts %}{% endblock %}
+{% endblock %}

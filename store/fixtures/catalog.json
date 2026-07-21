@@ -1,0 +1,779 @@
+[
+  {
+    "model": "store.category",
+    "pk": 1,
+    "fields": {
+      "name": "Premium Seafood",
+      "slug": "premium-seafood",
+      "order": 1
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 1,
+    "fields": {
+      "category": 1,
+      "name": "King Salmon Fillet (Ora King, NZ) 500g",
+      "slug": "king-salmon-fillet-ora-king-nz-500g",
+      "size_label": "500g",
+      "unit": "weight",
+      "price": "38.00",
+      "description": "Premium New Zealand king salmon, restaurant grade.",
+      "image": "",
+      "is_popular": true,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 2,
+    "fields": {
+      "category": 1,
+      "name": "Whole Lobster (live-chilled) 600g",
+      "slug": "whole-lobster-live-chilled-600g",
+      "size_label": "600g",
+      "unit": "weight",
+      "price": "85.00",
+      "description": "Live-chilled whole lobster, sourced daily.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 3,
+    "fields": {
+      "category": 1,
+      "name": "Scallops (Hokkaido, Japan) 500g",
+      "slug": "scallops-hokkaido-japan-500g",
+      "size_label": "500g",
+      "unit": "weight",
+      "price": "52.00",
+      "description": "Japanese Hokkaido scallops, sashimi grade.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 4,
+    "fields": {
+      "category": 1,
+      "name": "Bluefin Tuna (Sashimi Grade) 300g",
+      "slug": "bluefin-tuna-sashimi-grade-300g",
+      "size_label": "300g",
+      "unit": "weight",
+      "price": "65.00",
+      "description": "Japanese-standard bluefin, not available in retail.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 5,
+    "fields": {
+      "category": 1,
+      "name": "Coffin Bay Oysters x12",
+      "slug": "coffin-bay-oysters-x12",
+      "size_label": "x12",
+      "unit": "piece",
+      "price": "42.00",
+      "description": "Farm-raised in South Australia's Coffin Bay.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 6,
+    "fields": {
+      "category": 1,
+      "name": "Tiger Prawns (wild-caught) 1kg",
+      "slug": "tiger-prawns-wild-caught-1kg",
+      "size_label": "1kg",
+      "unit": "weight",
+      "price": "48.00",
+      "description": "Wild-caught, not farmed — superior flavour.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 7,
+    "fields": {
+      "category": 1,
+      "name": "Barramundi Fillet (line-caught) 800g",
+      "slug": "barramundi-fillet-line-caught-800g",
+      "size_label": "800g",
+      "unit": "weight",
+      "price": "36.00",
+      "description": "Line-caught barramundi, skin-on.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 8,
+    "fields": {
+      "category": 1,
+      "name": "Mud Crab (Queensland) 1kg",
+      "slug": "mud-crab-queensland-1kg",
+      "size_label": "1kg",
+      "unit": "weight",
+      "price": "72.00",
+      "description": "Live-chilled Queensland mud crab.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 2,
+    "fields": {
+      "name": "Premium Meat & Game",
+      "slug": "premium-meat-game",
+      "order": 2
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 9,
+    "fields": {
+      "category": 2,
+      "name": "Wagyu Beef Striploin MB9+ 300g",
+      "slug": "wagyu-beef-striploin-mb9-300g",
+      "size_label": "300g",
+      "unit": "weight",
+      "price": "95.00",
+      "description": "Marble score 9+, not sold in supermarkets.",
+      "image": "",
+      "is_popular": true,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 10,
+    "fields": {
+      "category": 2,
+      "name": "Grass-Fed Tomahawk Steak 1.2kg",
+      "slug": "grass-fed-tomahawk-steak-12kg",
+      "size_label": "1.2kg",
+      "unit": "weight",
+      "price": "78.00",
+      "description": "Full-bone tomahawk, 45-day dry aged.",
+      "image": "",
+      "is_popular": true,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 11,
+    "fields": {
+      "category": 2,
+      "name": "Berkshire Pork Rack (4-bone)",
+      "slug": "berkshire-pork-rack-4-bone",
+      "size_label": "4-bone",
+      "unit": "piece",
+      "price": "68.00",
+      "description": "Heritage breed, renowned for rich flavour.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 12,
+    "fields": {
+      "category": 2,
+      "name": "Muscovy Duck Breast 2pk",
+      "slug": "muscovy-duck-breast-2pk",
+      "size_label": "2pk",
+      "unit": "piece",
+      "price": "44.00",
+      "description": "Specialty breed, leaner and more flavourful.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 13,
+    "fields": {
+      "category": 2,
+      "name": "Kangaroo Tenderloin 500g",
+      "slug": "kangaroo-tenderloin-500g",
+      "size_label": "500g",
+      "unit": "weight",
+      "price": "32.00",
+      "description": "Wild-harvested Australian kangaroo.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 14,
+    "fields": {
+      "category": 2,
+      "name": "Free-Range Quail 4pk",
+      "slug": "free-range-quail-4pk",
+      "size_label": "4pk",
+      "unit": "piece",
+      "price": "38.00",
+      "description": "Whole quail, specialty poultry.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 15,
+    "fields": {
+      "category": 2,
+      "name": "Frenched Lamb Rack (8-bone)",
+      "slug": "frenched-lamb-rack-8-bone",
+      "size_label": "8-bone",
+      "unit": "piece",
+      "price": "62.00",
+      "description": "Restaurant-style French trim.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 3,
+    "fields": {
+      "name": "Artisan Cheese & Dairy",
+      "slug": "artisan-cheese-dairy",
+      "order": 3
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 16,
+    "fields": {
+      "category": 3,
+      "name": "Truffle Brie 200g",
+      "slug": "truffle-brie-200g",
+      "size_label": "200g",
+      "unit": "weight",
+      "price": "28.00",
+      "description": "Soft brie infused with black truffle.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 17,
+    "fields": {
+      "category": 3,
+      "name": "Aged Manchego 12 Months 250g",
+      "slug": "aged-manchego-12-months-250g",
+      "size_label": "250g",
+      "unit": "weight",
+      "price": "22.00",
+      "description": "Imported Spanish sheep milk cheese.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 18,
+    "fields": {
+      "category": 3,
+      "name": "Fresh Burrata 250g",
+      "slug": "fresh-burrata-250g",
+      "size_label": "250g",
+      "unit": "weight",
+      "price": "18.00",
+      "description": "Italian-style, made fresh — short shelf life.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 19,
+    "fields": {
+      "category": 3,
+      "name": "Sheep Milk Feta 300g",
+      "slug": "sheep-milk-feta-300g",
+      "size_label": "300g",
+      "unit": "weight",
+      "price": "16.00",
+      "description": "Authentic Greek-style production.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 20,
+    "fields": {
+      "category": 3,
+      "name": "Roquefort-Style Blue Cheese 200g",
+      "slug": "roquefort-style-blue-cheese-200g",
+      "size_label": "200g",
+      "unit": "weight",
+      "price": "20.00",
+      "description": "Cave-aged, authentic recipe.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 4,
+    "fields": {
+      "name": "Specialty Pantry",
+      "slug": "specialty-pantry",
+      "order": 4
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 21,
+    "fields": {
+      "category": 4,
+      "name": "White Truffle Oil (Italy) 100ml",
+      "slug": "white-truffle-oil-italy-100ml",
+      "size_label": "100ml",
+      "unit": "piece",
+      "price": "45.00",
+      "description": "Real truffle extract, not artificial flavouring.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 22,
+    "fields": {
+      "category": 4,
+      "name": "Iranian Saffron 1g",
+      "slug": "iranian-saffron-1g",
+      "size_label": "1g",
+      "unit": "piece",
+      "price": "18.00",
+      "description": "Premium grade, hand-picked.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 23,
+    "fields": {
+      "category": 4,
+      "name": "12-Year Aged Balsamic Vinegar 250ml",
+      "slug": "12-year-aged-balsamic-vinegar-250ml",
+      "size_label": "250ml",
+      "unit": "piece",
+      "price": "55.00",
+      "description": "Traditional Modena production.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 24,
+    "fields": {
+      "category": 4,
+      "name": "Hatcho Miso Paste (3yr aged) 300g",
+      "slug": "hatcho-miso-paste-3yr-aged-300g",
+      "size_label": "300g",
+      "unit": "piece",
+      "price": "22.00",
+      "description": "Japanese 3-year aged, deep umami.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 25,
+    "fields": {
+      "category": 4,
+      "name": "Lebanese Stone-Ground Tahini 500g",
+      "slug": "lebanese-stone-ground-tahini-500g",
+      "size_label": "500g",
+      "unit": "piece",
+      "price": "16.00",
+      "description": "Cold-pressed, single origin sesame.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 26,
+    "fields": {
+      "category": 4,
+      "name": "Fermented Black Garlic x5 bulbs",
+      "slug": "fermented-black-garlic-x5-bulbs",
+      "size_label": "x5 bulbs",
+      "unit": "piece",
+      "price": "14.00",
+      "description": "Slow-fermented, sweet and complex.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 27,
+    "fields": {
+      "category": 4,
+      "name": "La Vera Smoked Paprika (Spain) 75g",
+      "slug": "la-vera-smoked-paprika-spain-75g",
+      "size_label": "75g",
+      "unit": "piece",
+      "price": "12.00",
+      "description": "Protected designation of origin.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 5,
+    "fields": {
+      "name": "Exotic Produce",
+      "slug": "exotic-produce",
+      "order": 5
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 28,
+    "fields": {
+      "category": 5,
+      "name": "Fresh Black Truffles 30g",
+      "slug": "fresh-black-truffles-30g",
+      "size_label": "30g",
+      "unit": "weight",
+      "price": "120.00",
+      "description": "Seasonal, sourced direct from growers.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 29,
+    "fields": {
+      "category": 5,
+      "name": "King Oyster Mushrooms 300g",
+      "slug": "king-oyster-mushrooms-300g",
+      "size_label": "300g",
+      "unit": "weight",
+      "price": "14.00",
+      "description": "Specialty variety, not in regular supermarkets.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 30,
+    "fields": {
+      "category": 5,
+      "name": "Australian Finger Limes 100g",
+      "slug": "australian-finger-limes-100g",
+      "size_label": "100g",
+      "unit": "weight",
+      "price": "18.00",
+      "description": "Native citrus, caviar-like pearls.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 31,
+    "fields": {
+      "category": 5,
+      "name": "Red Dragon Fruit x2",
+      "slug": "red-dragon-fruit-x2",
+      "size_label": "x2",
+      "unit": "piece",
+      "price": "12.00",
+      "description": "Imported, inconsistently available in retail.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 32,
+    "fields": {
+      "category": 5,
+      "name": "Heirloom Tomato Mix 500g",
+      "slug": "heirloom-tomato-mix-500g",
+      "size_label": "500g",
+      "unit": "weight",
+      "price": "16.00",
+      "description": "Rare heritage varieties, grown to order.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 33,
+    "fields": {
+      "category": 5,
+      "name": "Edible Flowers Mix 30g",
+      "slug": "edible-flowers-mix-30g",
+      "size_label": "30g",
+      "unit": "piece",
+      "price": "22.00",
+      "description": "Restaurant plating quality.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 6,
+    "fields": {
+      "name": "Cured & Preserved",
+      "slug": "cured-preserved",
+      "order": 6
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 34,
+    "fields": {
+      "category": 6,
+      "name": "Prosciutto di Parma 100g",
+      "slug": "prosciutto-di-parma-100g",
+      "size_label": "100g",
+      "unit": "piece",
+      "price": "18.00",
+      "description": "Italian DOP certified.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 35,
+    "fields": {
+      "category": 6,
+      "name": "Jamon Iberico Bellota 80g",
+      "slug": "jamon-iberico-bellota-80g",
+      "size_label": "80g",
+      "unit": "piece",
+      "price": "32.00",
+      "description": "Acorn-fed iberian ham, top-tier.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 36,
+    "fields": {
+      "category": 6,
+      "name": "Cold-Smoked Salmon 200g",
+      "slug": "cold-smoked-salmon-200g",
+      "size_label": "200g",
+      "unit": "piece",
+      "price": "24.00",
+      "description": "Artisan wood-smoked, not mass produced.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 37,
+    "fields": {
+      "category": 6,
+      "name": "Confit Duck Leg 2pk",
+      "slug": "confit-duck-leg-2pk",
+      "size_label": "2pk",
+      "unit": "piece",
+      "price": "34.00",
+      "description": "French slow-cooked in own fat.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 38,
+    "fields": {
+      "category": 6,
+      "name": "Sicilian Anchovies in Olive Oil 100g",
+      "slug": "sicilian-anchovies-in-olive-oil-100g",
+      "size_label": "100g",
+      "unit": "piece",
+      "price": "14.00",
+      "description": "Salt-packed, Italian import.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.category",
+    "pk": 7,
+    "fields": {
+      "name": "Premium Accompaniments",
+      "slug": "premium-accompaniments",
+      "order": 7
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 39,
+    "fields": {
+      "category": 7,
+      "name": "Wagyu Beef Tallow 300ml",
+      "slug": "wagyu-beef-tallow-300ml",
+      "size_label": "300ml",
+      "unit": "piece",
+      "price": "22.00",
+      "description": "Rendered from Wagyu fat, for perfect searing.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 40,
+    "fields": {
+      "category": 7,
+      "name": "72-Hour Bone Broth 500ml",
+      "slug": "72-hour-bone-broth-500ml",
+      "size_label": "500ml",
+      "unit": "piece",
+      "price": "18.00",
+      "description": "Slow-cooked, collagen-rich.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 41,
+    "fields": {
+      "category": 7,
+      "name": "French-Style Cultured Butter 250g",
+      "slug": "french-style-cultured-butter-250g",
+      "size_label": "250g",
+      "unit": "piece",
+      "price": "14.00",
+      "description": "Lactic fermented, high fat content.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  },
+  {
+    "model": "store.product",
+    "pk": 42,
+    "fields": {
+      "category": 7,
+      "name": "Sicilian Salt-Packed Capers 100g",
+      "slug": "sicilian-salt-packed-capers-100g",
+      "size_label": "100g",
+      "unit": "piece",
+      "price": "12.00",
+      "description": "Preserved in sea salt, Italian import.",
+      "image": "",
+      "is_popular": false,
+      "is_active": true,
+      "created_at": "2026-07-20T00:00:00+10:00"
+    }
+  }
+]

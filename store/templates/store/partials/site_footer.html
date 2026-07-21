@@ -1,0 +1,17 @@
+<footer style="padding:63px 34px 43px;text-align:center;border-top:1px solid #ececec;margin-top:34px;">
+  <div style="font-size:11px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;color:#999999;margin-bottom:36px;">Copyright © 2026 PrimePantry. All rights reserved.</div>
+  <nav style="display:flex;justify-content:center;align-items:center;gap:23px;flex-wrap:wrap;">
+    <a href="{% url 'store:home' %}" style="display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">
+      <span style="width:8px;height:8px;border-radius:9999px;{% if active_nav == 'home' %}background:#212123;{% else %}border:1px solid #999999;{% endif %}display:inline-block;box-sizing:border-box;"></span>Home
+    </a>
+    <a href="{% url 'store:catalog' %}" style="display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">
+      <span style="width:8px;height:8px;border-radius:9999px;{% if active_nav == 'catalog' %}background:#212123;{% else %}border:1px solid #999999;{% endif %}display:inline-block;box-sizing:border-box;"></span>Catalog
+    </a>
+    <a href="{% url 'store:cart' %}" style="display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">
+      <span style="width:8px;height:8px;border-radius:9999px;{% if active_nav == 'cart' %}background:#212123;{% else %}border:1px solid #999999;{% endif %}display:inline-block;box-sizing:border-box;"></span>Cart
+    </a>
+    <a href="{% url 'store:my_orders' %}" style="display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">
+      <span style="width:8px;height:8px;border-radius:9999px;{% if active_nav == 'orders' %}background:#212123;{% else %}border:1px solid #999999;{% endif %}display:inline-block;box-sizing:border-box;"></span>My Orders
+    </a>
+  </nav>
+</footer>
