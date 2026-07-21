@@ -1,0 +1,89 @@
+{% extends "base_shell.html" %}
+{% load static %}
+{% block title %}{{ product.name }} — PrimePantry{% endblock %}
+{% block shell %}
+<main style="max-width:1320px;margin:0 auto;padding:0 34px;">
+  <section style="position:relative;padding:43px 0 23px;">
+    <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">{{ product.category.name }}</div>
+    <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:9px 0 0;font-weight:400;">{{ product.name }}</h1>
+    <a href="{% url 'store:catalog' %}" style="position:absolute;top:43px;right:0;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">← Catalog</a>
+  </section>
+
+  <section style="display:flex;justify-content:center;padding:23px 0 43px;">
+    <div style="max-width:480px;width:100%;aspect-ratio:1/1;border-radius:8px;overflow:hidden;background:#f2f2f2;">
+      <img src="{{ product.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt="{{ product.name }}">
+    </div>
+  </section>
+
+  <section style="max-width:640px;margin-bottom:43px;">
+    <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;margin-bottom:9px;">Information</div>
+    <p style="margin:0;font-size:14px;line-height:1.6;color:#212123;">{{ product.description }}</p>
+  </section>
+
+  {% if product.size_label %}
+  <section style="margin-bottom:34px;">
+    <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;margin-bottom:14px;">Pack size</div>
+    <span style="padding:12px 20px;border-radius:50px;background:#212123;color:#fff;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;display:inline-block;">{{ product.size_label }}</span>
+  </section>
+  {% endif %}
+
+  <section style="margin-bottom:34px;">
+    <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;margin-bottom:9px;">{{ price_label }}</div>
+    <div style="font-size:18px;line-height:1.5;color:#212123;">${{ product.price|floatformat:"0" }} AUD</div>
+  </section>
+
+  <section style="margin-bottom:63px;">
+    <form method="post" action="{% url 'store:cart_add' %}" style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+      {% csrf_token %}
+      <input type="hidden" name="slug" value="{{ product.slug }}">
+      <input type="hidden" name="qty" id="qty" value="1">
+      <div style="display:flex;align-items:center;border:1px solid #212123;border-radius:50px;">
+        <button type="button" id="qty-dec" aria-label="Decrease quantity" style="width:38px;height:38px;background:none;border:none;font-size:16px;color:#212123;cursor:pointer;font-family:'Jost',sans-serif;">−</button>
+        <span id="qty-val" style="min-width:26px;text-align:center;font-size:13px;color:#212123;">1</span>
+        <button type="button" id="qty-inc" aria-label="Increase quantity" style="width:38px;height:38px;background:none;border:none;font-size:16px;color:#212123;cursor:pointer;font-family:'Jost',sans-serif;">+</button>
+      </div>
+      <button type="submit" style="padding:14px 28px;border-radius:50px;background:#212123;color:#fff;border:1px solid #212123;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;">Add to cart</button>
+    </form>
+    {% if added %}
+    <div style="margin-top:16px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">
+      Added to cart · <a href="{% url 'store:cart' %}" style="color:#999999;">View cart →</a>
+    </div>
+    {% endif %}
+  </section>
+
+  {% if related %}
+  <section style="padding-bottom:96px;">
+    <h2 style="font-size:18px;line-height:1.5;color:#212123;margin:0 0 34px;font-weight:400;">You may also like</h2>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:34px;">
+      {% for p in related %}
+      <a href="{{ p.get_absolute_url }}">
+        <div style="aspect-ratio:1/1;overflow:hidden;border-radius:8px;background:#f2f2f2;">
+          <img src="{{ p.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt="{{ p.name }}" loading="lazy">
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:9px;">
+          <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">{{ p.name }}{% if p.is_popular %} · Popular{% endif %}</span>
+          <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#a6a6a7;white-space:nowrap;">${{ p.price|floatformat:"0" }}</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </section>
+  {% endif %}
+</main>
+{% endblock %}
+{% block shell_scripts %}
+<script>
+(function () {
+  var qty = document.getElementById("qty");
+  var val = document.getElementById("qty-val");
+  if (!qty || !val) return;
+  function set(n) { n = Math.max(1, n); qty.value = n; val.textContent = n; }
+  document.getElementById("qty-dec").addEventListener("click", function () {
+    set(parseInt(qty.value, 10) - 1);
+  });
+  document.getElementById("qty-inc").addEventListener("click", function () {
+    set(parseInt(qty.value, 10) + 1);
+  });
+})();
+</script>
+{% endblock %}

@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
 from django.utils import timezone
 
@@ -79,7 +79,48 @@ def _placeholder(request, title, active_nav="none"):
 
 
 def product_detail(request, slug):
-    return _placeholder(request, "Product")
+    product = get_object_or_404(Product, slug=slug, is_active=True)
+
+    related = list(
+        Product.objects.filter(is_active=True, category=product.category)
+        .exclude(id=product.id)[:3]
+    )
+    if len(related) < 3:
+        fillers = (
+            Product.objects.filter(is_active=True)
+            .exclude(id=product.id)
+            .exclude(category=product.category)[: 3 - len(related)]
+        )
+        related += list(fillers)
+
+    context = {
+        "product": product,
+        "related": related,
+        "price_label": "Price per weight" if product.unit == "weight" else "Price per pack",
+        "added": request.GET.get("added") == "1",
+        "active_nav": "catalog",
+    }
+    return render(request, "store/product_detail.html", context)
+
+
+def cart_add(request):
+    if request.method != "POST":
+        return redirect("store:catalog")
+    product = Product.objects.filter(
+        slug=request.POST.get("slug"), is_active=True
+    ).first()
+    if not product:
+        return redirect("store:catalog")
+    try:
+        qty = max(1, int(request.POST.get("qty", 1)))
+    except (TypeError, ValueError):
+        qty = 1
+    cart = request.session.get("cart", {})
+    key = str(product.id)
+    cart[key] = cart.get(key, 0) + qty
+    request.session["cart"] = cart
+    request.session.modified = True
+    return redirect(f"{product.get_absolute_url()}?added=1")
 
 
 def cart(request):
