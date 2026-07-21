@@ -1,0 +1,14 @@
+[Unit]
+Description=PrimePantry (gunicorn)
+After=network.target
+
+[Service]
+# Replace <user> with your Linux user on the VPS (e.g. root or a deploy user)
+User=<user>
+WorkingDirectory=/home/<user>/primepantry
+EnvironmentFile=/home/<user>/primepantry/.env
+ExecStart=/home/<user>/primepantry/.venv/bin/gunicorn primepantry.wsgi:application --bind 127.0.0.1:8001 --workers 3
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
