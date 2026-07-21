@@ -1,0 +1,72 @@
+{% extends "base_shell.html" %}
+{% block title %}Your cart — PrimePantry{% endblock %}
+{% block head %}
+<style>
+.cart-grid{display:grid;grid-template-columns:1fr 320px;gap:43px;align-items:start;}
+@media (max-width:860px){.cart-grid{grid-template-columns:1fr;}}
+</style>
+{% endblock %}
+{% block shell %}
+<main style="max-width:1200px;margin:0 auto;padding:43px 34px 96px;">
+  <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:0 0 34px;font-weight:400;">Your cart</h1>
+  {% if lines %}
+  <div class="cart-grid">
+    <div style="display:flex;flex-direction:column;">
+      {% for l in lines %}
+      <div style="display:flex;align-items:center;gap:18px;padding:18px 0;border-bottom:1px solid #ececec;">
+        <a href="{{ l.product.get_absolute_url }}" style="width:72px;height:72px;border-radius:8px;background:#f2f2f2;overflow:hidden;flex-shrink:0;">
+          <img src="{{ l.product.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt="{{ l.product.name }}">
+        </a>
+        <div style="flex:1;min-width:0;">
+          <a href="{{ l.product.get_absolute_url }}" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">{{ l.product.name }}</a>
+          <div style="font-size:13px;color:#999999;margin-top:4px;">{% if l.product.size_label %}{{ l.product.size_label }} · {% endif %}${{ l.product.price|floatformat:"2" }} each</div>
+        </div>
+        <div style="display:flex;align-items:center;border:1px solid #212123;border-radius:50px;flex-shrink:0;">
+          <form method="post" action="{% url 'store:cart_update' %}" style="display:flex;">
+            {% csrf_token %}
+            <input type="hidden" name="slug" value="{{ l.product.slug }}">
+            <input type="hidden" name="action" value="dec">
+            <button type="submit" aria-label="Decrease" style="width:30px;height:30px;background:none;border:none;font-size:15px;cursor:pointer;color:#212123;font-family:'Jost',sans-serif;">−</button>
+          </form>
+          <span style="min-width:20px;text-align:center;font-size:12px;color:#212123;">{{ l.qty }}</span>
+          <form method="post" action="{% url 'store:cart_update' %}" style="display:flex;">
+            {% csrf_token %}
+            <input type="hidden" name="slug" value="{{ l.product.slug }}">
+            <input type="hidden" name="action" value="inc">
+            <button type="submit" aria-label="Increase" style="width:30px;height:30px;background:none;border:none;font-size:15px;cursor:pointer;color:#212123;font-family:'Jost',sans-serif;">+</button>
+          </form>
+        </div>
+        <div style="width:84px;text-align:right;font-size:13px;color:#212123;flex-shrink:0;">${{ l.line_total|floatformat:"2" }}</div>
+        <form method="post" action="{% url 'store:cart_update' %}" style="flex-shrink:0;">
+          {% csrf_token %}
+          <input type="hidden" name="slug" value="{{ l.product.slug }}">
+          <input type="hidden" name="action" value="remove">
+          <button type="submit" aria-label="Remove" style="background:none;border:none;cursor:pointer;color:#999999;font-size:16px;line-height:1;padding:6px;font-family:'Jost',sans-serif;">×</button>
+        </form>
+      </div>
+      {% endfor %}
+      <a href="{% url 'store:catalog' %}" style="display:inline-block;margin-top:23px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">← Continue shopping</a>
+    </div>
+    <aside style="border:1px solid #ececec;padding:34px;">
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:#212123;margin-bottom:11px;">
+        <span>Items ({{ item_count }})</span><span>${{ subtotal|floatformat:"2" }}</span>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:13px;color:#999999;margin-bottom:18px;">
+        <span>Pickup</span><span>$0.00</span>
+      </div>
+      <div style="height:1px;background:#ececec;margin-bottom:18px;"></div>
+      <div style="display:flex;justify-content:space-between;font-size:18px;color:#212123;margin-bottom:9px;">
+        <span>Subtotal</span><span>${{ subtotal|floatformat:"2" }}</span>
+      </div>
+      <div style="font-size:12px;color:#999999;margin-bottom:23px;">Delivery or pickup selected at checkout.</div>
+      <a href="{% url 'store:checkout' %}" style="display:block;text-align:center;padding:14px;border-radius:50px;background:#212123;color:#fff;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Proceed to checkout</a>
+    </aside>
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:96px 0;">
+    <p style="font-size:13px;color:#999999;margin-bottom:18px;">Your cart is empty.</p>
+    <a href="{% url 'store:catalog' %}" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">Browse the catalog →</a>
+  </div>
+  {% endif %}
+</main>
+{% endblock %}

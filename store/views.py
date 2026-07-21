@@ -145,7 +145,55 @@ def cart_add(request):
 
 
 def cart(request):
-    return _placeholder(request, "Cart", active_nav="cart")
+    cart = request.session.get("cart", {})
+    products = {
+        p.id: p
+        for p in Product.objects.filter(
+            id__in=[int(k) for k in cart if k.isdigit()], is_active=True
+        )
+    }
+    lines = []
+    subtotal = 0
+    item_count = 0
+    for key, qty in cart.items():
+        product = products.get(int(key)) if key.isdigit() else None
+        if not product:
+            continue
+        line_total = product.price * qty
+        subtotal += line_total
+        item_count += qty
+        lines.append({"product": product, "qty": qty, "line_total": line_total})
+
+    context = {
+        "lines": lines,
+        "subtotal": subtotal,
+        "item_count": item_count,
+        "active_nav": "cart",
+    }
+    return render(request, "store/cart.html", context)
+
+
+def cart_update(request):
+    if request.method != "POST":
+        return redirect("store:cart")
+    product = Product.objects.filter(slug=request.POST.get("slug")).first()
+    action = request.POST.get("action")
+    cart = request.session.get("cart", {})
+    if product and str(product.id) in cart:
+        key = str(product.id)
+        if action == "inc":
+            cart[key] += 1
+        elif action == "dec":
+            cart[key] = max(1, cart[key] - 1)
+        elif action == "remove":
+            del cart[key]
+        request.session["cart"] = cart
+        request.session.modified = True
+    return redirect("store:cart")
+
+
+def checkout(request):
+    return _placeholder(request, "Checkout", active_nav="cart")
 
 
 def my_orders(request):
