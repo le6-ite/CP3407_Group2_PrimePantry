@@ -5,7 +5,7 @@
 <section style="position:relative;display:grid;grid-template-columns:1fr 1fr;min-height:92vh;background:#fff;">
   <div style="position:absolute;top:34px;left:34px;font-size:11px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;color:#212123;z-index:2;">PrimePantry</div>
   <div style="overflow:hidden;">
-    <img src="{% static 'store/assets/hero-ribs.png' %}" style="width:100%;height:100%;object-fit:cover;" alt="Smoked short rib slices">
+    <img src="{{ hero_primary_url }}" style="width:100%;height:100%;object-fit:cover;" alt="Premium seafood on ice">
   </div>
   <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-start;padding:0 72px;gap:23px;">
     <div style="font-size:14px;line-height:1.4;letter-spacing:1.5px;text-transform:uppercase;color:#999999;max-width:340px;">A curated food group-buying platform — window closes {{ cutoff_label }}, <span id="countdown" data-cutoff="{{ cutoff_ms }}">{{ countdown_text }}</span> left</div>

@@ -35,6 +35,12 @@ def home(request):
     context = {
         "popular_products": Product.objects.filter(is_active=True, is_popular=True)[:3],
         "collections": collections,
+        "hero_primary_url": _first_static(
+            "store/assets/hero-primary.webp",
+            "store/assets/hero-primary.png",
+            "store/assets/hero-primary.jpg",
+            "store/assets/hero-ribs.png",
+        ),
         "cutoff_label": cutoff_label(cutoff),
         "cutoff_ms": int(cutoff.timestamp() * 1000),
         "countdown_text": countdown_text(cutoff, now),
