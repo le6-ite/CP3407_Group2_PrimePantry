@@ -111,8 +111,37 @@ cd ~/primepantry && bash deploy/update.sh
 
 `deploy/update.sh` pulls, installs deps, migrates, re-collects static, and restarts.
 
+---
+
+## Alternative: deploy with Docker (if the VPS already runs Docker)
+
+If port 80 is already held by an existing Docker stack, skip the systemd + nginx
+steps above and run PrimePantry as its own container on a free port (8080).
+
+```bash
+cd ~/CP3407_Group2_PrimePantry
+git pull
+# .env must exist (see step 3). For port 8080, set:
+#   DJANGO_CSRF_TRUSTED_ORIGINS=http://<vps-ip>:8080
+docker compose up -d --build
+docker compose ps
+```
+
+Open `http://<vps-ip>:8080/`. The SQLite DB lives in the `pp_data` volume, so it
+survives rebuilds. Create an admin user:
+
+```bash
+docker compose exec web python manage.py createsuperuser
+```
+
+Update later:
+```bash
+git pull && docker compose up -d --build
+```
+
 ## Troubleshooting
-- `sudo journalctl -u primepantry -n 50` — gunicorn logs.
+- `docker compose logs -f web` — app logs (Docker).
+- `sudo journalctl -u primepantry -n 50` — gunicorn logs (systemd).
 - 400 Bad Request → `<vps-ip>` missing from `DJANGO_ALLOWED_HOSTS`.
 - Admin login CSRF error → set `DJANGO_CSRF_TRUSTED_ORIGINS` to your `http(s)://host`.
 - Images/CSS missing → re-run `collectstatic`, check gunicorn is running.

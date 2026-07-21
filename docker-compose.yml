@@ -1,0 +1,16 @@
+services:
+  web:
+    build: .
+    image: primepantry
+    container_name: primepantry
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      DJANGO_DB_PATH: /app/data/db.sqlite3
+    volumes:
+      - pp_data:/app/data
+    ports:
+      - "8080:8000"
+
+volumes:
+  pp_data:
