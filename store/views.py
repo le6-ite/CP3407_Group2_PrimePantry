@@ -1,9 +1,18 @@
+from django.contrib.staticfiles import finders
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
 from django.utils import timezone
 
 from .models import Category, Product
 from .utils import cutoff_label, countdown_text, next_cutoff
+
+
+def _first_static(*names, default=None):
+    """Return the URL of the first static file that exists."""
+    for rel in names:
+        if finders.find(rel):
+            return static(rel)
+    return static(default or names[-1])
 
 FEATURED_COLLECTIONS = [
     ("premium-meat-game", "hero-medallions.png"),
@@ -66,6 +75,12 @@ def catalog(request):
         "sections": sections,
         "result_count": len(products),
         "active_nav": "catalog",
+        "catalog_banner_url": _first_static(
+            "store/assets/catalog-banner.webp",
+            "store/assets/catalog-banner.png",
+            "store/assets/catalog-banner.jpg",
+            "store/assets/hero-medallions.png",
+        ),
     }
     return render(request, "store/catalog.html", context)
 
