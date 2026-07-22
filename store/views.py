@@ -71,6 +71,12 @@ def home(request):
             "store/assets/hero-primary.jpg",
             "store/assets/hero-ribs.png",
         ),
+        "home_poster_url": _first_static(
+            "store/assets/hero-video-poster.webp",
+            "store/assets/hero-video-poster.png",
+            "store/assets/hero-video-poster.jpg",
+            "store/assets/hero-medallions.png",
+        ),
         "cutoff_label": cutoff_label(cutoff),
         "cutoff_ms": int(cutoff.timestamp() * 1000),
         "countdown_text": countdown_text(cutoff, now),
