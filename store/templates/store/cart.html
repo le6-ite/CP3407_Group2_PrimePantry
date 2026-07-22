@@ -9,6 +9,7 @@
 {% block shell %}
 <main style="max-width:1200px;margin:0 auto;padding:43px 34px 96px;">
   <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:0 0 34px;font-weight:400;">Your cart</h1>
+  {% if notice %}<div style="border:1px solid #212123;padding:12px 16px;margin-bottom:23px;font-size:13px;color:#212123;">{{ notice }}</div>{% endif %}
   {% if lines %}
   <div class="cart-grid">
     <div style="display:flex;flex-direction:column;">

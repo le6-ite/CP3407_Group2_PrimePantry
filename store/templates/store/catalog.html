@@ -6,6 +6,7 @@
   <img src="{{ catalog_banner_url }}" style="width:100%;height:100%;object-fit:cover;filter:grayscale(15%);" alt="Premium cuts">
 </div>
 <main style="max-width:1320px;margin:0 auto;padding:43px 34px 0;">
+  {% if shop_notice %}<div style="border:1px solid #212123;padding:12px 16px;margin-bottom:23px;font-size:13px;color:#212123;">{{ shop_notice }} <a href="{% url 'store:cart' %}" style="float:right;">View cart →</a></div>{% endif %}
   <section style="display:flex;gap:23px;align-items:center;padding-bottom:43px;flex-wrap:wrap;">
     <form method="get" action="{% url 'store:catalog' %}" style="flex:1;min-width:220px;display:flex;">
       {% if active_cat %}<input type="hidden" name="cat" value="{{ active_cat }}">{% endif %}
@@ -34,6 +35,7 @@
     </div>
     <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:34px;">
       {% for p in s.products %}
+      <article>
       <a href="{{ p.get_absolute_url }}">
         <div style="aspect-ratio:1/1;overflow:hidden;border-radius:8px;background:#f2f2f2;">
           <img src="{{ p.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt="{{ p.name }}" loading="lazy">
@@ -43,6 +45,14 @@
           <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#a6a6a7;white-space:nowrap;">${{ p.price|floatformat:"0" }}</span>
         </div>
       </a>
+      <form method="post" action="{% url 'store:cart_add' %}" style="margin-top:11px;">
+        {% csrf_token %}
+        <input type="hidden" name="slug" value="{{ p.slug }}">
+        <input type="hidden" name="qty" value="1">
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button type="submit" style="padding:9px 16px;border:1px solid #212123;border-radius:50px;background:#fff;color:#212123;font:10px 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">+ Add to cart</button>
+      </form>
+      </article>
       {% endfor %}
     </div>
   </section>

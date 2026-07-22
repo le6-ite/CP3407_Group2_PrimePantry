@@ -2,15 +2,21 @@ import stripe
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
 from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
 from django.contrib.staticfiles import finders
 from django.db.models import Count, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.http import url_has_allowed_host_and_scheme
+from django.views.decorators.http import require_POST
 
-from .models import Category, Order, OrderItem, Product
+from .forms import CustomerProfileForm
+from .models import Category, CustomerProfile, Order, OrderItem, Product
 from .utils import cutoff_label, countdown_text, next_cutoff
 
 DELIVERY_FEE = 8
@@ -80,6 +86,7 @@ def home(request):
         "cutoff_label": cutoff_label(cutoff),
         "cutoff_ms": int(cutoff.timestamp() * 1000),
         "countdown_text": countdown_text(cutoff, now),
+        "shop_notice": request.session.pop("shop_notice", ""),
     }
     return render(request, "store/home.html", context)
 
@@ -116,6 +123,7 @@ def catalog(request):
         "categories": categories,
         "sections": sections,
         "result_count": len(products),
+        "shop_notice": request.session.pop("shop_notice", ""),
         "active_nav": "catalog",
         "catalog_banner_url": _first_static(
             "store/assets/catalog-banner.webp",
@@ -155,6 +163,13 @@ def product_detail(request, slug):
         "related": related,
         "price_label": "Price per weight" if product.unit == "weight" else "Price per pack",
         "added": request.GET.get("added") == "1",
+        "is_favorite": (
+            CustomerProfile.objects.get_or_create(user=request.user)[0]
+            .favorite_products.filter(pk=product.pk)
+            .exists()
+            if request.user.is_authenticated
+            else False
+        ),
         "active_nav": "catalog",
     }
     return render(request, "store/product_detail.html", context)
@@ -176,7 +191,15 @@ def cart_add(request):
     key = str(product.id)
     cart[key] = cart.get(key, 0) + qty
     request.session["cart"] = cart
+    request.session["shop_notice"] = f"{product.name} added to your cart."
     request.session.modified = True
+    next_url = request.POST.get("next", "")
+    if url_has_allowed_host_and_scheme(
+        next_url,
+        allowed_hosts={request.get_host()},
+        require_https=request.is_secure(),
+    ):
+        return redirect(next_url)
     return redirect(f"{product.get_absolute_url()}?added=1")
 
 
@@ -186,6 +209,7 @@ def cart(request):
         "lines": lines,
         "subtotal": subtotal,
         "item_count": sum(l["qty"] for l in lines),
+        "notice": request.session.pop("cart_notice", ""),
         "active_nav": "cart",
     }
     return render(request, "store/cart.html", context)
@@ -216,7 +240,14 @@ def checkout(request):
         return redirect("store:cart")
     form = request.session.pop("checkout_form", {})
     if not form and request.user.is_authenticated:
-        form = {"full_name": request.user.first_name, "email": request.user.email}
+        profile, _ = CustomerProfile.objects.get_or_create(user=request.user)
+        form = {
+            "full_name": request.user.first_name,
+            "email": request.user.email,
+            "phone": profile.phone,
+            "address": profile.address,
+            "fulfilment": profile.preferred_fulfilment,
+        }
     context = {
         "lines": lines,
         "subtotal": subtotal,
@@ -241,14 +272,39 @@ def checkout_pay(request):
     fulfilment = request.POST.get("fulfilment", Order.PICKUP)
     address = request.POST.get("address", "").strip()
     note = request.POST.get("note", "").strip()
+    save_profile = request.POST.get("save_profile") == "1"
 
-    if not full_name or not email:
+    if fulfilment not in {Order.PICKUP, Order.DELIVERY}:
+        fulfilment = Order.PICKUP
+
+    errors = []
+    if not full_name:
+        errors.append("Please enter your name.")
+    try:
+        validate_email(email)
+    except ValidationError:
+        errors.append("Please enter a valid email address.")
+    if fulfilment == Order.DELIVERY and not address:
+        errors.append("Please enter a delivery address.")
+
+    if errors:
         request.session["checkout_form"] = {
             "full_name": full_name, "email": email, "phone": phone,
             "fulfilment": fulfilment, "address": address, "note": note,
+            "save_profile": save_profile,
         }
-        request.session["checkout_error"] = "Please enter your name and email."
+        request.session["checkout_error"] = " ".join(errors)
         return redirect("store:checkout")
+
+    if request.user.is_authenticated and save_profile:
+        profile, _ = CustomerProfile.objects.get_or_create(user=request.user)
+        request.user.first_name = full_name
+        request.user.save(update_fields=["first_name"])
+        profile.phone = phone
+        if address:
+            profile.address = address
+        profile.preferred_fulfilment = fulfilment
+        profile.save()
 
     delivery_fee = DELIVERY_FEE if fulfilment == Order.DELIVERY else 0
     total = subtotal + delivery_fee
@@ -346,6 +402,12 @@ def order_confirmation(request):
 
     if not order or order.status != Order.PAID:
         return redirect("store:catalog")
+    session_order_ids = request.session.get("orders", [])
+    owns_order = (
+        request.user.is_authenticated and order.user_id == request.user.pk
+    ) or order.pk in session_order_ids
+    if not owns_order:
+        return redirect("store:catalog")
     return render(request, "store/confirmation.html", {"order": order, "active_nav": "cart"})
 
 
@@ -358,10 +420,115 @@ def my_orders(request):
     return render(request, "store/my_orders.html", context)
 
 
+@login_required
+def account(request):
+    profile, _ = CustomerProfile.objects.get_or_create(user=request.user)
+    saved = False
+    if request.method == "POST":
+        form = CustomerProfileForm(
+            request.POST, user=request.user, profile=profile
+        )
+        if form.is_valid():
+            form.save()
+            saved = True
+    else:
+        form = CustomerProfileForm(user=request.user, profile=profile)
+    context = {
+        "form": form,
+        "saved": saved,
+        "favorite_count": profile.favorite_products.filter(is_active=True).count(),
+        "order_count": request.user.orders.count(),
+        "active_nav": "account",
+    }
+    return render(request, "store/account.html", context)
+
+
+@login_required
+def favorites(request):
+    profile, _ = CustomerProfile.objects.get_or_create(user=request.user)
+    products = profile.favorite_products.filter(is_active=True).select_related("category")
+    return render(
+        request,
+        "store/favorites.html",
+        {
+            "products": products,
+            "shop_notice": request.session.pop("shop_notice", ""),
+            "active_nav": "account",
+        },
+    )
+
+
+@require_POST
+@login_required
+def favorite_toggle(request, slug):
+    product = get_object_or_404(Product, slug=slug)
+    profile, _ = CustomerProfile.objects.get_or_create(user=request.user)
+    if profile.favorite_products.filter(pk=product.pk).exists():
+        profile.favorite_products.remove(product)
+    else:
+        profile.favorite_products.add(product)
+    return redirect(product.get_absolute_url())
+
+
+@require_POST
+@login_required
+def favorites_add_all(request):
+    profile, _ = CustomerProfile.objects.get_or_create(user=request.user)
+    products = profile.favorite_products.filter(is_active=True)
+    cart = request.session.get("cart", {})
+    added = 0
+    for product in products:
+        key = str(product.pk)
+        cart[key] = cart.get(key, 0) + 1
+        added += 1
+    request.session["cart"] = cart
+    request.session["cart_notice"] = (
+        f"Added {added} favourite product{'s' if added != 1 else ''} to your cart."
+        if added
+        else "You do not have any available favourite products yet."
+    )
+    request.session.modified = True
+    return redirect("store:cart")
+
+
+@require_POST
+@login_required
+def reorder(request, order_id):
+    order = get_object_or_404(
+        Order.objects.prefetch_related("items__product"),
+        pk=order_id,
+        user=request.user,
+    )
+    cart = request.session.get("cart", {})
+    added = 0
+    for item in order.items.all():
+        if item.product and item.product.is_active:
+            key = str(item.product_id)
+            cart[key] = cart.get(key, 0) + item.quantity
+            added += item.quantity
+    request.session["cart"] = cart
+    request.session["cart_notice"] = (
+        f"Added {added} item{'s' if added != 1 else ''} from {order.number}."
+        if added
+        else "None of the products in that order are currently available."
+    )
+    request.session.modified = True
+    return redirect("store:cart")
+
+
 def login_register(request):
     if request.user.is_authenticated and request.method == "GET":
-        return redirect("store:my_orders")
-    next_url = request.GET.get("next") or request.POST.get("next") or ""
+        return redirect("store:account")
+    requested_next = request.GET.get("next") or request.POST.get("next") or ""
+    next_url = (
+        requested_next
+        if url_has_allowed_host_and_scheme(
+            requested_next,
+            allowed_hosts={request.get_host()},
+            require_https=request.is_secure(),
+        )
+        else ""
+    )
     mode = request.GET.get("mode", "login")
     error = ""
     values = {}
@@ -387,13 +554,14 @@ def login_register(request):
                 if values["full_name"]:
                     user.first_name = values["full_name"][:150]
                     user.save(update_fields=["first_name"])
+                CustomerProfile.objects.get_or_create(user=user)
                 login(request, user)
-                return redirect(next_url or "store:my_orders")
+                return redirect(next_url or "store:account")
         else:
             user = authenticate(request, username=email, password=password)
             if user is not None:
                 login(request, user)
-                return redirect(next_url or "store:my_orders")
+                return redirect(next_url or "store:account")
             error = "Invalid email or password."
     context = {
         "mode": mode, "error": error, "values": values,
@@ -402,6 +570,7 @@ def login_register(request):
     return render(request, "store/auth.html", context)
 
 
+@require_POST
 def logout_view(request):
     logout(request)
     return redirect("store:home")

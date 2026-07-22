@@ -1,0 +1,73 @@
+{% extends "base_shell.html" %}
+{% block title %}Your account — PrimePantry{% endblock %}
+{% block head %}
+<style>
+.account-grid{display:grid;grid-template-columns:220px minmax(0,1fr);gap:43px;align-items:start;}
+.account-input{width:100%;box-sizing:border-box;padding:13px 14px;border:1px solid #dddddd;background:#fff;color:#212123;font:13px 'Jost',sans-serif;outline:none;}
+.account-input:focus{border-color:#212123;}
+.account-field{display:flex;flex-direction:column;gap:7px;}
+.account-field label{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;}
+.account-error{font-size:12px;color:#8d2222;}
+@media(max-width:760px){.account-grid{grid-template-columns:1fr;}.account-nav{display:flex!important;flex-direction:row!important;flex-wrap:wrap;}.account-name-grid{grid-template-columns:1fr!important;}}
+</style>
+{% endblock %}
+{% block shell %}
+<main style="max-width:1000px;margin:0 auto;padding:43px 34px 96px;">
+  <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:0 0 34px;font-weight:400;">Your account</h1>
+  <div class="account-grid">
+    <aside>
+      <div class="account-nav" style="display:flex;flex-direction:column;gap:14px;">
+        <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">Profile</span>
+        <a href="{% url 'store:favorites' %}" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">Favourites ({{ favorite_count }})</a>
+        <a href="{% url 'store:my_orders' %}" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">Orders ({{ order_count }})</a>
+      </div>
+      <form method="post" action="{% url 'store:logout' %}" style="margin-top:34px;">
+        {% csrf_token %}
+        <button type="submit" style="padding:0;border:none;background:none;color:#999999;font:11px 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">Log out</button>
+      </form>
+    </aside>
+
+    <section>
+      {% if saved %}<div style="border:1px solid #212123;padding:12px 16px;margin-bottom:23px;font-size:13px;">Profile saved.</div>{% endif %}
+      {% if form.non_field_errors %}<div class="account-error" style="margin-bottom:18px;">{{ form.non_field_errors }}</div>{% endif %}
+      <form method="post" action="{% url 'store:account' %}" style="display:flex;flex-direction:column;gap:18px;">
+        {% csrf_token %}
+        <div class="account-name-grid" style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+          <div class="account-field">
+            <label for="{{ form.full_name.id_for_label }}">{{ form.full_name.label }}</label>
+            {{ form.full_name }}
+            {% for error in form.full_name.errors %}<span class="account-error">{{ error }}</span>{% endfor %}
+          </div>
+          <div class="account-field">
+            <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+            {{ form.email }}
+            {% for error in form.email.errors %}<span class="account-error">{{ error }}</span>{% endfor %}
+          </div>
+        </div>
+        <div class="account-field">
+          <label for="{{ form.phone.id_for_label }}">Phone</label>
+          {{ form.phone }}
+          {% for error in form.phone.errors %}<span class="account-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="account-field">
+          <label for="{{ form.address.id_for_label }}">Saved delivery address</label>
+          {{ form.address }}
+          {% if form.address.help_text %}<span style="font-size:12px;color:#999999;">{{ form.address.help_text }}</span>{% endif %}
+          {% for error in form.address.errors %}<span class="account-error">{{ error }}</span>{% endfor %}
+        </div>
+        <div class="account-field">
+          <label for="{{ form.preferred_fulfilment.id_for_label }}">{{ form.preferred_fulfilment.label }}</label>
+          {{ form.preferred_fulfilment }}
+          {% for error in form.preferred_fulfilment.errors %}<span class="account-error">{{ error }}</span>{% endfor %}
+        </div>
+        <button type="submit" style="align-self:flex-start;padding:14px 28px;border-radius:50px;background:#212123;color:#fff;border:none;font:11px 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">Save profile</button>
+      </form>
+
+      <div style="margin-top:43px;padding-top:23px;border-top:1px solid #ececec;">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;margin-bottom:9px;">Payment</div>
+        <p style="font-size:13px;line-height:1.6;color:#212123;margin:0;">Payment details are securely handled by Stripe. PrimePantry does not store your card number.</p>
+      </div>
+    </section>
+  </div>
+</main>
+{% endblock %}

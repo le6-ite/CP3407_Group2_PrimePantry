@@ -15,7 +15,12 @@ urlpatterns = [
     path("checkout/pay/", views.checkout_pay, name="checkout_pay"),
     path("order/confirmation/", views.order_confirmation, name="order_confirmation"),
     path("orders/", views.my_orders, name="my_orders"),
-    path("account/", views.login_register, name="auth"),
+    path("orders/<int:order_id>/reorder/", views.reorder, name="reorder"),
+    path("account/", views.account, name="account"),
+    path("account/sign-in/", views.login_register, name="auth"),
+    path("account/favorites/", views.favorites, name="favorites"),
+    path("account/favorites/add-all/", views.favorites_add_all, name="favorites_add_all"),
+    path("product/<slug:slug>/favorite/", views.favorite_toggle, name="favorite_toggle"),
     path("logout/", views.logout_view, name="logout"),
     path("staff/quantities/", views.admin_quantities, name="admin_quantities"),
 ]

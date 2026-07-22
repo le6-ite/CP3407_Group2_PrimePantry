@@ -18,7 +18,10 @@ def next_cutoff(now=None):
 
 
 def cutoff_label(cutoff):
-    return cutoff.strftime("%a ").rstrip() + " " + cutoff.strftime("%-I:%M %p")
+    # ``%-I`` removes a leading zero on POSIX, but is unsupported by Windows.
+    # Strip it explicitly so this label renders on every supported platform.
+    hour = cutoff.strftime("%I").lstrip("0") or "0"
+    return cutoff.strftime("%a") + " " + f"{hour}:{cutoff.strftime('%M %p')}"
 
 
 def countdown_text(cutoff, now=None, seconds=False):

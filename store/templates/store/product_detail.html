@@ -44,6 +44,14 @@
       </div>
       <button type="submit" style="padding:14px 28px;border-radius:50px;background:#212123;color:#fff;border:1px solid #212123;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;font-family:'Jost',sans-serif;">Add to cart</button>
     </form>
+    {% if user.is_authenticated %}
+    <form method="post" action="{% url 'store:favorite_toggle' product.slug %}" style="margin-top:14px;">
+      {% csrf_token %}
+      <button type="submit" style="padding:0;border:none;background:none;color:#999999;font:11px 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">{% if is_favorite %}Remove from favourites{% else %}♡ Add to favourites{% endif %}</button>
+    </form>
+    {% else %}
+    <a href="{% url 'store:auth' %}?next={{ request.path|urlencode }}" style="display:inline-block;margin-top:14px;color:#999999;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">♡ Sign in to save</a>
+    {% endif %}
     {% if added %}
     <div style="margin-top:16px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">
       Added to cart · <a href="{% url 'store:cart' %}" style="color:#999999;">View cart →</a>

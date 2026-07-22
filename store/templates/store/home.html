@@ -22,6 +22,8 @@
 </style>
 {% endblock %}
 {% block content %}
+{% include "store/partials/site_header.html" %}
+{% if shop_notice %}<div style="border-bottom:1px solid #212123;padding:12px 34px;font-size:13px;color:#212123;">{{ shop_notice }} <a href="{% url 'store:cart' %}" style="float:right;">View cart →</a></div>{% endif %}
 <section style="position:relative;display:grid;grid-template-columns:1fr 1fr;min-height:92vh;background:#fff;">
   <div style="position:absolute;top:34px;left:34px;font-size:11px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;color:#212123;z-index:2;">PrimePantry</div>
   <div style="overflow:hidden;">
@@ -44,6 +46,7 @@
   <a href="{% url 'store:catalog' %}" style="position:absolute;top:96px;right:34px;display:inline-flex;align-items:center;gap:6px;border:1px solid #212123;border-radius:50px;padding:14px 23px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">View all ⌄</a>
   <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:34px;">
     {% for p in popular_products %}
+    <article>
     <a href="{{ p.get_absolute_url }}">
       <div style="aspect-ratio:1/1;overflow:hidden;border-radius:8px;background:#f2f2f2;">
         <img src="{{ p.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt="{{ p.name }}">
@@ -53,6 +56,14 @@
         <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#a6a6a7;white-space:nowrap;">${{ p.from_price|floatformat:"0" }}</span>
       </div>
     </a>
+    <form method="post" action="{% url 'store:cart_add' %}" style="margin-top:11px;">
+      {% csrf_token %}
+      <input type="hidden" name="slug" value="{{ p.slug }}">
+      <input type="hidden" name="qty" value="1">
+      <input type="hidden" name="next" value="{{ request.get_full_path }}">
+      <button type="submit" style="padding:9px 16px;border:1px solid #212123;border-radius:50px;background:#fff;color:#212123;font:10px 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">+ Add to cart</button>
+    </form>
+    </article>
     {% empty %}
     <p style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#a6a6a7;">No products yet — add some in the admin.</p>
     {% endfor %}

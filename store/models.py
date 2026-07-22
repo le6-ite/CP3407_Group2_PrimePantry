@@ -71,6 +71,29 @@ class Product(models.Model):
         return self.price
 
 
+class CustomerProfile(models.Model):
+    PICKUP = "pickup"
+    DELIVERY = "delivery"
+    FULFILMENT_CHOICES = [(PICKUP, "Pickup"), (DELIVERY, "Delivery")]
+
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, related_name="customer_profile"
+    )
+    phone = models.CharField(max_length=40, blank=True)
+    address = models.CharField(max_length=255, blank=True)
+    preferred_fulfilment = models.CharField(
+        max_length=10, choices=FULFILMENT_CHOICES, default=PICKUP
+    )
+    stripe_customer_id = models.CharField(max_length=255, blank=True)
+    favorite_products = models.ManyToManyField(
+        Product, blank=True, related_name="favorited_by"
+    )
+    updated_at = models.DateTimeField(auto_now=True)
+
+    def __str__(self):
+        return f"Profile for {self.user.email or self.user.username}"
+
+
 class Order(models.Model):
     PENDING = "pending"
     PAID = "paid"
