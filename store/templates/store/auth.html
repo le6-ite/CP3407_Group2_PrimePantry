@@ -1,0 +1,37 @@
+{% extends "base_shell.html" %}
+{% block title %}{% if mode == "register" %}Register{% else %}Log in{% endif %} — PrimePantry{% endblock %}
+{% block head %}
+<style>
+.auth-input{width:100%;box-sizing:border-box;padding:14px 16px;border:1px solid #dddddd;font-size:13px;font-family:'Jost',sans-serif;margin-bottom:9px;color:#212123;outline:none;}
+.auth-input:focus{border-color:#212123;}
+.auth-input::placeholder{color:#c4c4c4;}
+</style>
+{% endblock %}
+{% block shell %}
+<main style="max-width:400px;margin:0 auto;padding:96px 23px 120px;">
+  <div style="text-align:center;margin-bottom:43px;">
+    <a href="{% url 'store:home' %}" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">PrimePantry</a>
+  </div>
+  <div style="display:flex;justify-content:center;gap:23px;margin-bottom:34px;">
+    <a href="?mode=login{% if next %}&next={{ next|urlencode }}{% endif %}" style="padding-bottom:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;{% if mode != 'register' %}border-bottom:1px solid #212123;color:#212123;{% else %}border-bottom:1px solid transparent;color:#999999;{% endif %}">Log in</a>
+    <a href="?mode=register{% if next %}&next={{ next|urlencode }}{% endif %}" style="padding-bottom:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;{% if mode == 'register' %}border-bottom:1px solid #212123;color:#212123;{% else %}border-bottom:1px solid transparent;color:#999999;{% endif %}">Register</a>
+  </div>
+  {% if error %}<div style="text-align:center;font-size:12px;color:#212123;margin-bottom:18px;">{{ error }}</div>{% endif %}
+  <form method="post" action="{% url 'store:auth' %}{% if next %}?next={{ next|urlencode }}{% endif %}">
+    {% csrf_token %}
+    <input type="hidden" name="action" value="{% if mode == 'register' %}register{% else %}login{% endif %}">
+    {% if mode == 'register' %}
+    <input class="auth-input" name="full_name" value="{{ values.full_name }}" placeholder="Full name">
+    {% endif %}
+    <input class="auth-input" type="email" name="email" value="{{ values.email }}" placeholder="Email address" required>
+    <input class="auth-input" type="password" name="password" placeholder="Password" required>
+    {% if mode == 'register' %}
+    <input class="auth-input" type="password" name="confirm" placeholder="Confirm password" required>
+    {% endif %}
+    <button type="submit" style="display:block;width:100%;text-align:center;padding:14px;border-radius:50px;background:#212123;color:#fff;border:none;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;margin-top:9px;cursor:pointer;font-family:'Jost',sans-serif;">{% if mode == 'register' %}Create account{% else %}Log in{% endif %}</button>
+  </form>
+  <div style="text-align:center;margin-top:18px;font-size:12px;color:#999999;">
+    or <a href="{% url 'store:catalog' %}" style="color:#212123;">continue as guest →</a>
+  </div>
+</main>
+{% endblock %}

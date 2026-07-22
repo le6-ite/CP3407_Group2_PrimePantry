@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Aggregate quantities — PrimePantry admin{% endblock %}
+{% block content %}
+<div style="display:flex;min-height:100vh;font-family:'Jost',sans-serif;">
+  <nav style="width:240px;border-right:1px solid #ececec;padding:34px 24px;box-sizing:border-box;">
+    <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;margin-bottom:34px;">PrimePantry · Admin</div>
+    <div style="display:flex;flex-direction:column;gap:16px;">
+      <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;border-left:2px solid #212123;padding-left:12px;">Aggregate quantities</span>
+      <a href="/admin/store/order/" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;padding-left:14px;">Orders</a>
+      <a href="/admin/store/product/" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;padding-left:14px;">Products</a>
+      <a href="{% url 'store:home' %}" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;padding-left:14px;">← Storefront</a>
+    </div>
+  </nav>
+  <main style="flex:1;padding:43px 44px;box-sizing:border-box;max-width:1400px;">
+    <div style="margin-bottom:34px;">
+      <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:0;font-weight:400;">Aggregate quantities</h1>
+      <div style="font-size:13px;color:#999999;margin-top:4px;">Window closes {{ cutoff|date:"D j M, g:i A" }} · totals across {{ total_orders }} confirmed order{{ total_orders|pluralize }}</div>
+    </div>
+    {% if rows %}
+    <div>
+      <div style="display:flex;gap:20px;padding:0 0 11px;border-bottom:1px solid #212123;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">
+        <div style="width:56px;"></div>
+        <div style="flex:1;">Product</div>
+        <div style="width:150px;">Category</div>
+        <div style="width:280px;">Total quantity</div>
+        <div style="width:70px;text-align:right;">Orders</div>
+      </div>
+      {% for r in rows %}
+      <div style="display:flex;align-items:center;gap:20px;padding:16px 0;border-bottom:1px solid #ececec;">
+        <div style="width:56px;"><div style="width:40px;height:40px;border-radius:8px;background:#f2f2f2;overflow:hidden;"><img src="{{ r.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt=""></div></div>
+        <div style="flex:1;font-size:13px;color:#212123;">{{ r.name }}</div>
+        <div style="width:150px;font-size:13px;color:#999999;">{{ r.category }}</div>
+        <div style="width:280px;padding-right:20px;box-sizing:border-box;">
+          <div style="font-size:12px;color:#212123;margin-bottom:5px;">{{ r.qty }} × {{ r.size_label }}</div>
+          <div style="height:2px;background:#f2f2f2;"><div style="height:100%;background:#212123;width:{{ r.bar_pct }}%;"></div></div>
+        </div>
+        <div style="width:70px;text-align:right;font-size:13px;color:#999999;">{{ r.orders }}</div>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p style="font-size:13px;color:#999999;padding:43px 0;">No confirmed orders for this window yet.</p>
+    {% endif %}
+  </main>
+</div>
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base_shell.html" %}
+{% block title %}My orders — PrimePantry{% endblock %}
+{% block shell %}
+<main style="max-width:900px;margin:0 auto;padding:43px 34px 96px;">
+  <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:0 0 34px;font-weight:400;">My orders</h1>
+  {% if orders %}
+  <div style="display:flex;flex-direction:column;">
+    {% for o in orders %}
+    <div style="display:flex;align-items:center;gap:18px;padding:18px 0;border-bottom:1px solid #ececec;flex-wrap:wrap;">
+      <div style="flex:1;min-width:200px;">
+        <div style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">#{{ o.number }}</div>
+        <div style="font-size:13px;color:#999999;margin-top:4px;">Window closes {{ o.round_cutoff|date:"j M" }} · {{ o.items.count }} item{{ o.items.count|pluralize }}</div>
+      </div>
+      <div style="font-size:13px;color:#212123;">${{ o.total|floatformat:"2" }} AUD</div>
+      {% if o.status == 'ready' %}
+      <span style="background:#212123;color:#fff;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:50px;">{{ o.get_status_display }}</span>
+      {% elif o.status == 'packing' %}
+      <span style="border:1px solid #999999;color:#999999;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:50px;">{{ o.get_status_display }}</span>
+      {% else %}
+      <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">{{ o.get_status_display }}</span>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:96px 0;">
+    <p style="font-size:13px;color:#999999;margin-bottom:18px;">No orders yet.</p>
+    <a href="{% url 'store:catalog' %}" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">Browse the catalog →</a>
+  </div>
+  {% endif %}
+</main>
+{% endblock %}

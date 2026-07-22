@@ -1,3 +1,4 @@
+from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
 from django.db import models
 from django.templatetags.static import static
@@ -73,13 +74,26 @@ class Product(models.Model):
 class Order(models.Model):
     PENDING = "pending"
     PAID = "paid"
+    PACKING = "packing"
+    READY = "ready"
+    COMPLETED = "completed"
     CANCELLED = "cancelled"
-    STATUS_CHOICES = [(PENDING, "Pending"), (PAID, "Paid"), (CANCELLED, "Cancelled")]
+    STATUS_CHOICES = [
+        (PENDING, "Awaiting payment"),
+        (PAID, "Confirmed"),
+        (PACKING, "Packing"),
+        (READY, "Ready for pickup"),
+        (COMPLETED, "Completed"),
+        (CANCELLED, "Cancelled"),
+    ]
 
     PICKUP = "pickup"
     DELIVERY = "delivery"
     FULFILMENT_CHOICES = [(PICKUP, "Pickup"), (DELIVERY, "Delivery")]
 
+    user = models.ForeignKey(
+        User, on_delete=models.SET_NULL, null=True, blank=True, related_name="orders"
+    )
     full_name = models.CharField(max_length=120)
     email = models.EmailField()
     phone = models.CharField(max_length=40, blank=True)

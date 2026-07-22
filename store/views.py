@@ -1,6 +1,10 @@
 import stripe
 from django.conf import settings
+from django.contrib.admin.views.decorators import staff_member_required
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
+from django.db.models import Count, Sum
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
 from django.urls import reverse
@@ -204,11 +208,14 @@ def checkout(request):
     lines, subtotal = _cart_lines(request)
     if not lines:
         return redirect("store:cart")
+    form = request.session.pop("checkout_form", {})
+    if not form and request.user.is_authenticated:
+        form = {"full_name": request.user.first_name, "email": request.user.email}
     context = {
         "lines": lines,
         "subtotal": subtotal,
         "delivery_fee": DELIVERY_FEE,
-        "form": request.session.pop("checkout_form", {}),
+        "form": form,
         "error": request.session.pop("checkout_error", ""),
         "active_nav": "cart",
     }
@@ -241,6 +248,7 @@ def checkout_pay(request):
     total = subtotal + delivery_fee
 
     order = Order.objects.create(
+        user=request.user if request.user.is_authenticated else None,
         full_name=full_name, email=email, phone=phone, fulfilment=fulfilment,
         address=address, note=note, subtotal=subtotal, delivery_fee=delivery_fee,
         total=total, round_cutoff=next_cutoff(),
@@ -252,6 +260,12 @@ def checkout_pay(request):
             size_label=product.size_label, unit_price=product.price,
             quantity=line["qty"],
         )
+
+    # Track the order in the session so guests can see it under "My orders".
+    session_orders = request.session.get("orders", [])
+    session_orders.append(order.pk)
+    request.session["orders"] = session_orders
+    request.session.modified = True
 
     # Without Stripe keys, fall back to a mock "paid" so the flow still works.
     if not settings.STRIPE_SECRET_KEY:
@@ -330,8 +344,99 @@ def order_confirmation(request):
 
 
 def my_orders(request):
-    return _placeholder(request, "My Orders", active_nav="orders")
+    if request.user.is_authenticated:
+        orders = Order.objects.filter(user=request.user)
+    else:
+        orders = Order.objects.filter(id__in=request.session.get("orders", []))
+    context = {"orders": orders.prefetch_related("items"), "active_nav": "orders"}
+    return render(request, "store/my_orders.html", context)
 
 
-def account(request):
-    return _placeholder(request, "Account")
+def login_register(request):
+    if request.user.is_authenticated and request.method == "GET":
+        return redirect("store:my_orders")
+    next_url = request.GET.get("next") or request.POST.get("next") or ""
+    mode = request.GET.get("mode", "login")
+    error = ""
+    values = {}
+    if request.method == "POST":
+        action = request.POST.get("action", "login")
+        mode = "register" if action == "register" else "login"
+        email = request.POST.get("email", "").strip().lower()
+        password = request.POST.get("password", "")
+        values = {"email": email, "full_name": request.POST.get("full_name", "").strip()}
+        if action == "register":
+            if not email or not password:
+                error = "Email and password are required."
+            elif password != request.POST.get("confirm", ""):
+                error = "Passwords do not match."
+            elif len(password) < 6:
+                error = "Password must be at least 6 characters."
+            elif User.objects.filter(username=email).exists():
+                error = "An account with this email already exists."
+            else:
+                user = User.objects.create_user(
+                    username=email, email=email, password=password
+                )
+                if values["full_name"]:
+                    user.first_name = values["full_name"][:150]
+                    user.save(update_fields=["first_name"])
+                login(request, user)
+                return redirect(next_url or "store:my_orders")
+        else:
+            user = authenticate(request, username=email, password=password)
+            if user is not None:
+                login(request, user)
+                return redirect(next_url or "store:my_orders")
+            error = "Invalid email or password."
+    context = {
+        "mode": mode, "error": error, "values": values,
+        "next": next_url, "active_nav": "none",
+    }
+    return render(request, "store/auth.html", context)
+
+
+def logout_view(request):
+    logout(request)
+    return redirect("store:home")
+
+
+@staff_member_required
+def admin_quantities(request):
+    cutoff = next_cutoff()
+    counted = [Order.PAID, Order.PACKING, Order.READY, Order.COMPLETED]
+    agg = list(
+        OrderItem.objects.filter(
+            order__round_cutoff=cutoff, order__status__in=counted, product__isnull=False
+        )
+        .values(
+            "product_id", "product__name", "product__size_label",
+            "product__category__name",
+        )
+        .annotate(total_qty=Sum("quantity"), order_count=Count("order", distinct=True))
+        .order_by("-total_qty")
+    )
+    products = {
+        p.id: p for p in Product.objects.filter(id__in=[r["product_id"] for r in agg])
+    }
+    max_qty = max((r["total_qty"] for r in agg), default=1) or 1
+    rows = []
+    for r in agg:
+        product = products.get(r["product_id"])
+        rows.append({
+            "name": r["product__name"],
+            "category": r["product__category__name"] or "—",
+            "qty": r["total_qty"],
+            "size_label": r["product__size_label"] or "pack",
+            "orders": r["order_count"],
+            "bar_pct": round(r["total_qty"] / max_qty * 100),
+            "image_url": product.image_url if product else static("store/assets/placeholder.png"),
+        })
+    context = {
+        "rows": rows,
+        "cutoff": cutoff,
+        "total_orders": Order.objects.filter(
+            round_cutoff=cutoff, status__in=counted
+        ).count(),
+    }
+    return render(request, "store/admin_quantities.html", context)

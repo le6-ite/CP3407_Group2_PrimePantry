@@ -15,5 +15,7 @@ urlpatterns = [
     path("checkout/pay/", views.checkout_pay, name="checkout_pay"),
     path("order/confirmation/", views.order_confirmation, name="order_confirmation"),
     path("orders/", views.my_orders, name="my_orders"),
-    path("account/", views.account, name="auth"),
+    path("account/", views.login_register, name="auth"),
+    path("logout/", views.logout_view, name="logout"),
+    path("staff/quantities/", views.admin_quantities, name="admin_quantities"),
 ]
