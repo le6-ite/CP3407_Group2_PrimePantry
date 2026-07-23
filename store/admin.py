@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Category, Order, OrderItem, Product
+from .models import Category, CustomerProfile, Order, OrderItem, Product
 
 
 @admin.register(Category)
@@ -17,6 +17,14 @@ class ProductAdmin(admin.ModelAdmin):
     list_editable = ("price", "is_popular", "is_active")
     search_fields = ("name", "description")
     prepopulated_fields = {"slug": ("name",)}
+
+
+@admin.register(CustomerProfile)
+class CustomerProfileAdmin(admin.ModelAdmin):
+    list_display = ("user", "phone", "preferred_fulfilment", "updated_at")
+    list_filter = ("preferred_fulfilment",)
+    search_fields = ("user__username", "user__email", "phone", "address")
+    filter_horizontal = ("favorite_products",)
 
 
 class OrderItemInline(admin.TabularInline):

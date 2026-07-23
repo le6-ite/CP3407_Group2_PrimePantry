@@ -52,6 +52,12 @@
             <input class="co-input" name="phone" value="{{ form.phone }}" placeholder="Phone">
           </div>
           <input class="co-input" type="email" name="email" value="{{ form.email }}" placeholder="Email address" required>
+          {% if user.is_authenticated %}
+          <label style="display:flex;align-items:center;gap:9px;margin-top:12px;font-size:12px;color:#999999;cursor:pointer;">
+            <input type="checkbox" name="save_profile" value="1" {% if form.save_profile %}checked{% endif %}>
+            Save these contact and delivery details to my profile
+          </label>
+          {% endif %}
         </section>
         <section>
           <h2 style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;margin:0 0 14px;font-weight:400;">Payment <span style="color:#cccccc;text-transform:none;letter-spacing:0;">(test mode)</span></h2>

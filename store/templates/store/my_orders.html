@@ -19,6 +19,12 @@
       {% else %}
       <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">{{ o.get_status_display }}</span>
       {% endif %}
+      {% if user.is_authenticated %}
+      <form method="post" action="{% url 'store:reorder' o.pk %}">
+        {% csrf_token %}
+        <button type="submit" style="padding:8px 14px;border-radius:50px;border:1px solid #212123;background:#fff;color:#212123;font:11px 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">Reorder</button>
+      </form>
+      {% endif %}
     </div>
     {% endfor %}
   </div>

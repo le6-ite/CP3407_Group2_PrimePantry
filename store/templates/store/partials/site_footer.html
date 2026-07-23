@@ -10,8 +10,8 @@
     <a href="{% url 'store:cart' %}" style="display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">
       <span style="width:8px;height:8px;border-radius:9999px;{% if active_nav == 'cart' %}background:#212123;{% else %}border:1px solid #999999;{% endif %}display:inline-block;box-sizing:border-box;"></span>Cart
     </a>
-    <a href="{% url 'store:my_orders' %}" style="display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">
-      <span style="width:8px;height:8px;border-radius:9999px;{% if active_nav == 'orders' %}background:#212123;{% else %}border:1px solid #999999;{% endif %}display:inline-block;box-sizing:border-box;"></span>My Orders
+    <a href="{% if user.is_authenticated %}{% url 'store:account' %}{% else %}{% url 'store:auth' %}{% endif %}" style="display:flex;align-items:center;gap:9px;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">
+      <span style="width:8px;height:8px;border-radius:9999px;{% if active_nav == 'account' %}background:#212123;{% else %}border:1px solid #999999;{% endif %}display:inline-block;box-sizing:border-box;"></span>Account
     </a>
   </nav>
 </footer>

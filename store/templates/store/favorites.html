@@ -1,0 +1,53 @@
+{% extends "base_shell.html" %}
+{% block title %}Your favourites — PrimePantry{% endblock %}
+{% block shell %}
+<main style="max-width:1200px;margin:0 auto;padding:43px 34px 96px;">
+  {% if shop_notice %}<div style="border:1px solid #212123;padding:12px 16px;margin-bottom:23px;font-size:13px;color:#212123;">{{ shop_notice }} <a href="{% url 'store:cart' %}" style="float:right;">View cart →</a></div>{% endif %}
+  <div style="display:flex;justify-content:space-between;align-items:center;gap:18px;margin-bottom:34px;flex-wrap:wrap;">
+    <div>
+      <a href="{% url 'store:account' %}" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#999999;">← Account</a>
+      <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:9px 0 0;font-weight:400;">Your favourites</h1>
+    </div>
+    {% if products %}
+    <form method="post" action="{% url 'store:favorites_add_all' %}">
+      {% csrf_token %}
+      <button type="submit" style="padding:14px 24px;border-radius:50px;background:#212123;color:#fff;border:none;font:11px 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">Add all to cart</button>
+    </form>
+    {% endif %}
+  </div>
+
+  {% if products %}
+  <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:34px;">
+    {% for p in products %}
+    <article>
+      <a href="{{ p.get_absolute_url }}">
+        <div style="aspect-ratio:1/1;overflow:hidden;border-radius:8px;background:#f2f2f2;">
+          <img src="{{ p.image_url }}" style="width:100%;height:100%;object-fit:cover;" alt="{{ p.name }}">
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-top:9px;">
+          <span style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">{{ p.name }}</span>
+          <span style="font-size:11px;color:#999999;white-space:nowrap;">${{ p.price|floatformat:"2" }}</span>
+        </div>
+      </a>
+      <form method="post" action="{% url 'store:cart_add' %}" style="margin-top:10px;display:inline-block;margin-right:16px;">
+        {% csrf_token %}
+        <input type="hidden" name="slug" value="{{ p.slug }}">
+        <input type="hidden" name="qty" value="1">
+        <input type="hidden" name="next" value="{{ request.get_full_path }}">
+        <button type="submit" style="padding:0;border:none;background:none;color:#212123;font:11px 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">+ Add to cart</button>
+      </form>
+      <form method="post" action="{% url 'store:favorite_toggle' p.slug %}" style="margin-top:10px;display:inline-block;">
+        {% csrf_token %}
+        <button type="submit" style="padding:0;border:none;background:none;color:#999999;font:11px 'Jost',sans-serif;letter-spacing:1.5px;text-transform:uppercase;cursor:pointer;">Remove</button>
+      </form>
+    </article>
+    {% endfor %}
+  </div>
+  {% else %}
+  <div style="text-align:center;padding:96px 0;">
+    <p style="font-size:13px;color:#999999;margin-bottom:18px;">You have not saved any favourites yet.</p>
+    <a href="{% url 'store:catalog' %}" style="font-size:11px;letter-spacing:1.5px;text-transform:uppercase;color:#212123;">Browse the catalog →</a>
+  </div>
+  {% endif %}
+</main>
+{% endblock %}
