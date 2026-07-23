@@ -25,7 +25,6 @@
 {% include "store/partials/site_header.html" %}
 {% if shop_notice %}<div style="border-bottom:1px solid #212123;padding:12px 34px;font-size:13px;color:#212123;">{{ shop_notice }} <a href="{% url 'store:cart' %}" style="float:right;">View cart →</a></div>{% endif %}
 <section style="position:relative;display:grid;grid-template-columns:1fr 1fr;min-height:92vh;background:#fff;">
-  <div style="position:absolute;top:34px;left:34px;font-size:11px;line-height:1;letter-spacing:1.5px;text-transform:uppercase;color:#212123;z-index:2;">PrimePantry</div>
   <div style="overflow:hidden;">
     <img src="{{ hero_primary_url }}" style="width:100%;height:100%;object-fit:cover;" alt="Premium seafood on ice">
   </div>
