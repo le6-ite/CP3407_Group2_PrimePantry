@@ -18,4 +18,5 @@ urlpatterns = [
     path("account/", views.login_register, name="auth"),
     path("logout/", views.logout_view, name="logout"),
     path("staff/quantities/", views.admin_quantities, name="admin_quantities"),
+    path("staff/quantities/export/", views.export_shopping_list, name="admin_quantities_export"),
 ]

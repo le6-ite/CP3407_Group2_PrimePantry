@@ -1,3 +1,5 @@
+import csv
+
 import stripe
 from django.conf import settings
 from django.contrib.admin.views.decorators import staff_member_required
@@ -5,6 +7,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
 from django.contrib.staticfiles import finders
 from django.db.models import Count, Sum
+from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.templatetags.static import static
 from django.urls import reverse
@@ -407,13 +410,16 @@ def logout_view(request):
     return redirect("store:home")
 
 
-@staff_member_required
-def admin_quantities(request):
-    cutoff = next_cutoff()
-    counted = [Order.PAID, Order.PACKING, Order.READY, Order.COMPLETED]
-    agg = list(
+COUNTED_STATUSES = [Order.PAID, Order.PACKING, Order.READY, Order.COMPLETED]
+
+
+def _window_aggregate(cutoff):
+    """Per-product totals for a window's confirmed orders, biggest first."""
+    return list(
         OrderItem.objects.filter(
-            order__round_cutoff=cutoff, order__status__in=counted, product__isnull=False
+            order__round_cutoff=cutoff,
+            order__status__in=COUNTED_STATUSES,
+            product__isnull=False,
         )
         .values(
             "product_id", "product__name", "product__size_label",
@@ -422,6 +428,12 @@ def admin_quantities(request):
         .annotate(total_qty=Sum("quantity"), order_count=Count("order", distinct=True))
         .order_by("-total_qty")
     )
+
+
+@staff_member_required
+def admin_quantities(request):
+    cutoff = next_cutoff()
+    agg = _window_aggregate(cutoff)
     products = {
         p.id: p for p in Product.objects.filter(id__in=[r["product_id"] for r in agg])
     }
@@ -442,7 +454,27 @@ def admin_quantities(request):
         "rows": rows,
         "cutoff": cutoff,
         "total_orders": Order.objects.filter(
-            round_cutoff=cutoff, status__in=counted
+            round_cutoff=cutoff, status__in=COUNTED_STATUSES
         ).count(),
     }
     return render(request, "store/admin_quantities.html", context)
+
+
+@staff_member_required
+def export_shopping_list(request):
+    cutoff = next_cutoff()
+    response = HttpResponse(content_type="text/csv")
+    response["Content-Disposition"] = (
+        f'attachment; filename="shopping-list-{cutoff:%Y-%m-%d}.csv"'
+    )
+    writer = csv.writer(response)
+    writer.writerow(["Product", "Category", "Size", "Total quantity", "Orders"])
+    for r in _window_aggregate(cutoff):
+        writer.writerow([
+            r["product__name"],
+            r["product__category__name"] or "",
+            r["product__size_label"] or "",
+            r["total_qty"],
+            r["order_count"],
+        ])
+    return response

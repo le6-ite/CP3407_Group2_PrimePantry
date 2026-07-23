@@ -13,9 +13,14 @@
     </div>
   </nav>
   <main style="flex:1;padding:43px 44px;box-sizing:border-box;max-width:1400px;">
-    <div style="margin-bottom:34px;">
-      <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:0;font-weight:400;">Aggregate quantities</h1>
-      <div style="font-size:13px;color:#999999;margin-top:4px;">Window closes {{ cutoff|date:"D j M, g:i A" }} · totals across {{ total_orders }} confirmed order{{ total_orders|pluralize }}</div>
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:34px;flex-wrap:wrap;gap:14px;">
+      <div>
+        <h1 style="font-size:18px;line-height:1.5;color:#212123;margin:0;font-weight:400;">Aggregate quantities</h1>
+        <div style="font-size:13px;color:#999999;margin-top:4px;">Window closes {{ cutoff|date:"D j M, g:i A" }} · totals across {{ total_orders }} confirmed order{{ total_orders|pluralize }}</div>
+      </div>
+      {% if rows %}
+      <a href="{% url 'store:admin_quantities_export' %}" style="padding:12px 22px;border-radius:50px;border:1px solid #212123;background:none;color:#212123;font-size:11px;letter-spacing:1.5px;text-transform:uppercase;">Export shopping list</a>
+      {% endif %}
     </div>
     {% if rows %}
     <div>
