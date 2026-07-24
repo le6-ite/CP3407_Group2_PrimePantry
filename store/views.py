@@ -365,15 +365,21 @@ def checkout_pay(request):
             "quantity": 1,
         })
 
-    session = stripe.checkout.Session.create(
-        mode="payment",
-        line_items=stripe_lines,
-        customer_email=email,
-        success_url=request.build_absolute_uri(reverse("store:order_confirmation"))
-        + "?session_id={CHECKOUT_SESSION_ID}",
-        cancel_url=request.build_absolute_uri(reverse("store:checkout")),
-        metadata={"order_id": str(order.pk)},
-    )
+    try:
+        session = stripe.checkout.Session.create(
+            mode="payment",
+            line_items=stripe_lines,
+            customer_email=email,
+            success_url=request.build_absolute_uri(reverse("store:order_confirmation"))
+            + "?session_id={CHECKOUT_SESSION_ID}",
+            cancel_url=request.build_absolute_uri(reverse("store:checkout")),
+            metadata={"order_id": str(order.pk)},
+        )
+    except Exception:
+        request.session["checkout_error"] = (
+            "Payment could not be started. Please try again in a moment."
+        )
+        return redirect("store:checkout")
     order.stripe_session_id = session.id
     order.save(update_fields=["stripe_session_id"])
     return redirect(session.url, code=303)

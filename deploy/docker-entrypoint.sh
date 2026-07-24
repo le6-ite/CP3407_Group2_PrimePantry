@@ -10,4 +10,5 @@ if ! python manage.py shell -c "import sys; from store.models import Product; sy
   python manage.py loaddata catalog
 fi
 
-exec gunicorn primepantry.wsgi:application --bind 0.0.0.0:8000 --workers 3
+exec gunicorn primepantry.wsgi:application --bind 0.0.0.0:8000 \
+  --workers 2 --max-requests 500 --max-requests-jitter 50 --timeout 60
