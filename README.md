@@ -1,67 +1,66 @@
+# PrimePantry — a curated food group-buying platform
 
-How to edit this: test-2025
-* Option-1 (tested and worked ok): PyCharm supports editing of these .md files. Then you need to push to the main branch or make a pull request.
-* Option-2 (tested ok): Edit and commit it directly on github. Then any local repo copies will need to be "updated".
+**CP3407 Software Engineering II · Group 2 · James Cook University**
 
-# cp3407-project-v2024 template [Delete or change to your team/project name before submitting]
+PrimePantry is a group-buying platform that connects consumers with trusted suppliers of
+premium seafood, meat and specialty food. Customers order during a scheduled weekly window;
+after the cutoff, products are sourced against actual demand rather than held as stock —
+improving freshness, cutting waste and making premium ingredients affordable for individuals.
 
-This a project assignment template for CP3407. 
-The following is the list of items, which are required to be completed.
+- **Live site (deployed):** http://147.93.56.126:8080/
+- **Repository:** https://github.com/le6-ite/CP3407_Group2_PrimePantry
+- **Stack:** Django 5.1 · SQLite · Stripe (test mode) · Docker · Gunicorn · Nginx · Hostinger VPS
 
-## How to submit [You may delete this before submitting]
-
-2. Add your instructor (JCU-Australia: jc138691@gmail.com Dmitry Konovalov) as a team member to view your project on github
-1. Submit link to your repository
-2. Download your github repository as a zip file and submit via LearnJCU.
+---
 
 ## Team
 
-It is recommended to complete this assignment in a group of 2-4 students.
-1. Student 1
-2. Student name 2
-3. Name 3
-4. Name 4
+> ⚠️ Replace the handles below with each member's full name and student ID before submitting.
 
+| Member | GitHub | Main areas |
+|--------|--------|------------|
+| Eti | [@le6-ite](https://github.com/le6-ite) | Backend, storefront, checkout & payments, deployment |
+| Samuel | [@Eslezer](https://github.com/Eslezer) | Accounts, profiles, favourites, testing |
 
-# Project planning BEFORE iteration-1, (see chapters 1-3)
-Checklist/TODOs: 
-* Update the following during each week prac session
-* github entry timestamp is BEFORE the iteration-1
-* User stories are correct: see p39
-* Must have more user stories than fits into iterations 1 and 2. To practice the priority.
-* [user story title](./user_stories/user_story_01_title.md), priority XX, YY days 
-* ...
+Instructor **Dmitry Konovalov** (`jc138691@gmail.com`) has been added as a collaborator to view the project.
 
-Total: YY days
+---
 
+## Documentation index (for marking)
 
-## Iteration 1 [duration 3-4 weeks], add your start and end dates 
+Everything required for marking is linked from here.
 
-* Goal is to have 2 iterations during a trimester of teaching.
-* Update the following during each week prac session
-* During pracs, you may experiment with using other github ways of tracking changes, e.g. via pull requests.
+| Rubric criterion | Document |
+|------------------|----------|
+| 1 · Requirements | [Product backlog & user stories](./User_stories.md) → [detailed stories](./user_stories/) |
+| 2 · Design | [Design: architecture, database & UI](./docs/design.md) |
+| 3 · Implementation | This repository + [live site](http://147.93.56.126:8080/) · [feature summary](./docs/implementation.md) |
+| 4 · Test | [Testing](./docs/testing.md) |
+| 5 · Version control | Git/GitHub — see the [commit history](https://github.com/le6-ite/CP3407_Group2_PrimePantry/commits/main) |
+| 6 · Build & dev tools | [Tools & libraries](./docs/tools.md) |
+| 7 · Agile | [Iteration 1](./iteration_1.md) · [Iteration 2](./iteration_2.md) |
+| 8 · Technical writing | This site (all pages above) |
+| — Deployment | [Deployment guide](./DEPLOY.md) |
 
-1. [user story title](./user_stories/user_story_01_title.md), priority XX, YY days 
-2. ...
+---
 
-Total: YY days
+## Run it locally
 
+```bash
+git clone https://github.com/le6-ite/CP3407_Group2_PrimePantry.git
+cd CP3407_Group2_PrimePantry
+python3 -m venv .venv && .venv/bin/pip install -r requirements.txt
+.venv/bin/python manage.py migrate
+.venv/bin/python manage.py loaddata catalog     # 7 categories, 42 products
+.venv/bin/python manage.py runserver            # http://127.0.0.1:8000/
+```
 
-### Iteration 2 [duration 3-4 weeks], add your start and end dates
-Goal is to have 2 iterations during a trimester of teaching.
-1. [user story title](./user_stories/user_story_01_title.md), priority XX, YY days 
-2. ...
+Payments use Stripe **test mode** — no real money moves. Pay with card `4242 4242 4242 4242`,
+any future expiry, any CVC. See [DEPLOY.md](./DEPLOY.md) to run the production (Docker) build.
 
-Total: YY days
+## What's implemented
 
-### Not enough time/developers: 
-1. [user story title](./user_stories/user_story_01_title.md), priority XX, YY days 
-2. ...
-
-Total: YY days
-
-# Actual iterations
-1. [Iteration-1](./iteration_1.md)
-2. [Iteration-2](./iteration_2.md)
-
-
+Register/login · browse by category · search · product detail · cart · **online payment (Stripe test)** ·
+**weekly order window with countdown & cutoff** · order confirmation & history · saved profiles ·
+favourites · reorder · admin product/order management · **admin aggregate "total quantity ordered per
+product" with CSV shopping-list export** (the group-buying USP). See [docs/implementation.md](./docs/implementation.md).
