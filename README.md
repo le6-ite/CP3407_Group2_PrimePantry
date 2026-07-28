@@ -22,7 +22,7 @@ across the whole team; planning-poker estimates and technical-writing review wer
 |--------|--------|-------------------|------------------------|
 | **Etigel Tcydenov** | [@le6-ite](https://github.com/le6-ite) | Backend, storefront, checkout & payments, deployment | **Design** — architecture & database ([docs/design.md](./docs/design.md) §1–2) · **Deployment** ([DEPLOY.md](./DEPLOY.md)) |
 | **Kei Kwan Ip** | [@KwanQueenie](https://github.com/KwanQueenie) | Accounts, profiles, favourites, testing | **Requirements** ([User_stories.md](./User_stories.md), [user_stories/](./user_stories/)) · **UI design & screenshots** ([docs/design.md](./docs/design.md) §3) |
-| **Samuel Fernandez** | — | Requirements research, product pitch, QA | **Testing** ([docs/testing.md](./docs/testing.md)) · **Implementation** ([docs/implementation.md](./docs/implementation.md)) |
+| **Samuel Fernandez** |  [@Eslezer](https://github.com/eslezer) | Requirements research, product pitch, QA | **Testing** ([docs/testing.md](./docs/testing.md)) · **Implementation** ([docs/implementation.md](./docs/implementation.md)) |
 | **Shane Ross** | — | Agile tracking, tooling & QA support | **Agile** ([iteration_1.md](./iteration_1.md), [iteration_2.md](./iteration_2.md)) · **Build & dev tools** ([docs/tools.md](./docs/tools.md)) · **Version control** writeup |
 
 **Technical writing** (criterion 8) — README cohesion and cross-linking — is a shared responsibility, coordinated by Etigel.
