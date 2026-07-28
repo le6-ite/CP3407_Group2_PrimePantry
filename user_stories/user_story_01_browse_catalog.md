@@ -7,10 +7,9 @@ premium products I'm interested in.*
 The catalog is the entry point to the whole shop; nothing can be bought without it.
 
 ## Estimation: 1.5 days
-Planning poker (before Iteration 1):
-* Eti: 1 day
-* Kei: 2 days
-* **Agreed: 1.5 days** (Kei flagged image handling; Eti had done Django ORM listing before)
+Planning poker (before Iteration 1), all four members:
+* Etigel: 1 · Kei: 2 · Samuel: 2 · Shane: 1
+* **Agreed: 1.5 days** (Kei flagged image handling; Etigel had done Django ORM listing before)
 
 ## Assumptions
 * Products and categories are seeded from a fixture.

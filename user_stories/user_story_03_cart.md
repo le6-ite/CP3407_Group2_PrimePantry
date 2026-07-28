@@ -6,9 +6,8 @@ can review my order before paying.*
 ## Priority: P1 (highest) — Iteration 1
 
 ## Estimation: 1.5 days
-Planning poker:
-* Eti: 1 day
-* Kei: 2 days
+Planning poker (all four members):
+* Etigel: 1 · Kei: 2 · Samuel: 2 · Shane: 1
 * **Agreed: 1.5 days** (session vs. DB cart discussed; session chosen for simplicity)
 
 ## Assumptions

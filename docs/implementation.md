@@ -1,5 +1,7 @@
 # Implementation summary
 
+> **Documentation owner:** Samuel Fernandez.
+
 The delivered, deployed solution. Live at **http://147.93.56.126:8080/**; source in this
 repository (Django app in the `store` app).
 

@@ -1,5 +1,7 @@
 # Testing
 
+> **Documentation owner:** Samuel Fernandez.
+
 PrimePantry is tested at two levels: **automated tests** (Django's test runner, run against a
 throwaway database) and **acceptance testing** (manually exercising each user story, including
 a real end-to-end Stripe test payment on the deployed site).

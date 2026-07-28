@@ -1,5 +1,7 @@
 # Build & development tools
 
+> **Documentation owner:** Shane Ross.
+
 The libraries and tools used to build, run and ship PrimePantry, and **how** each was used.
 
 ## Runtime dependencies (`requirements.txt`)

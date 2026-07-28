@@ -1,5 +1,7 @@
 # Design
 
+> **Documentation owners:** Etigel Tcydenov (§1 Architecture, §2 Database) · Kei Kwan Ip (§3 User-interface design & screenshots).
+
 This page documents the **architecture**, **database** and **user-interface** design of
 PrimePantry. Diagrams are written in Mermaid and render directly on GitHub.
 

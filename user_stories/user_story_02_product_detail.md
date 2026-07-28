@@ -6,9 +6,8 @@ can decide whether to buy it.*
 ## Priority: P1 (highest) — Iteration 1
 
 ## Estimation: 1.0 day
-Planning poker:
-* Eti: 1 day
-* Kei: 1 day
+Planning poker (all four members):
+* Etigel: 1 · Kei: 1 · Samuel: 1 · Shane: 1
 * **Agreed: 1.0 day**
 
 ## Assumptions

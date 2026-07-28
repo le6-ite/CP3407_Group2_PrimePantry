@@ -1,12 +1,14 @@
 # Product backlog & user stories
 
+> **Documentation owner:** Kei Kwan Ip. Estimates agreed by all four members at planning poker.
+
 This is the full product backlog for PrimePantry, prioritised and estimated **before
 Iteration 1**. There are deliberately **more stories than fit into two iterations** so that
 priority has to be exercised — the lowest-priority items sit in the *Not enough time* bucket.
 
 **Priority** — `P1` = highest (must-have, build first), `P3` = lowest (nice-to-have).
 **Estimate** — ideal developer-days, agreed by planning poker (see each detailed story for the
-poker numbers). Estimators: **Eti** and **Kei**.
+poker numbers). Estimators: **Etigel**, **Kei**, **Samuel** and **Shane**.
 
 Detailed stories live in [`user_stories/`](./user_stories/).
 

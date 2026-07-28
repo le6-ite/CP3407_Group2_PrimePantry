@@ -15,12 +15,17 @@ improving freshness, cutting waste and making premium ingredients affordable for
 
 ## Team
 
-Group of 2–4 students (JCU CP3407, Group 2). *Add student IDs and any further members below.*
+CP3407 Group 2 — four members. *Add student IDs below.* Documentation responsibilities are split
+across the whole team; planning-poker estimates and technical-writing review were done by all four.
 
-| Member | GitHub | Main areas |
-|--------|--------|------------|
-| Tcydenov Etigel | [@le6-ite](https://github.com/le6-ite) | Backend, storefront, checkout & payments, deployment |
-| Kei Kwan Ip | [@Eslezer](https://github.com/Eslezer) | Accounts, profiles, favourites, testing |
+| Member | GitHub | Code contribution | Documentation owner of |
+|--------|--------|-------------------|------------------------|
+| **Etigel Tcydenov** | [@le6-ite](https://github.com/le6-ite) | Backend, storefront, checkout & payments, deployment | **Design** — architecture & database ([docs/design.md](./docs/design.md) §1–2) · **Deployment** ([DEPLOY.md](./DEPLOY.md)) |
+| **Samuel Fernandez** | [@Eslezer](https://github.com/Eslezer) | Accounts, profiles, favourites, automated tests | **Testing** ([docs/testing.md](./docs/testing.md)) · **Implementation** ([docs/implementation.md](./docs/implementation.md)) |
+| **Kei Kwan Ip** | — | Product pitch, requirements, UI review | **Requirements** ([User_stories.md](./User_stories.md), [user_stories/](./user_stories/)) · **UI design & screenshots** ([docs/design.md](./docs/design.md) §3) |
+| **Shane Ross** | — | Agile tracking, tooling & QA support | **Agile** ([iteration_1.md](./iteration_1.md), [iteration_2.md](./iteration_2.md)) · **Build & dev tools** ([docs/tools.md](./docs/tools.md)) · **Version control** writeup |
+
+**Technical writing** (criterion 8) — README cohesion and cross-linking — is a shared responsibility, coordinated by Etigel.
 
 Instructor **Dmitry Konovalov** (`jc138691@gmail.com`) has been added as a collaborator to view the project.
 

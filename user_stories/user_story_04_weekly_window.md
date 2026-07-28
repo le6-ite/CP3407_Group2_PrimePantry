@@ -8,9 +8,8 @@ This is the group-buying mechanic that defines the product (orders are pooled pe
 sourced against demand, not stock).
 
 ## Estimation: 1.0 day
-Planning poker:
-* Eti: 1 day
-* Kei: 1 day
+Planning poker (all four members):
+* Etigel: 1 · Kei: 1 · Samuel: 1 · Shane: 1
 * **Agreed: 1.0 day**
 
 ## Assumptions

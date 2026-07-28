@@ -8,9 +8,8 @@ The revenue moment; the highest-risk story (external payment integration), so es
 generously.
 
 ## Estimation: 2.5 days
-Planning poker:
-* Eti: 2 days
-* Kei: 3 days
+Planning poker (all four members):
+* Etigel: 2 · Kei: 3 · Samuel: 3 · Shane: 2
 * **Agreed: 2.5 days** (Stripe integration + order model + confirmation are unknowns)
 
 ## Assumptions

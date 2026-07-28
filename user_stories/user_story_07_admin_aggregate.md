@@ -8,9 +8,8 @@ Directly solves *Problem 04* from the pitch (manual tallying is slow and error-p
 core operational payoff of the group-buying model.
 
 ## Estimation: 1.5 days
-Planning poker:
-* Eti: 1 day
-* Kei: 2 days
+Planning poker (all four members):
+* Etigel: 1 · Kei: 2 · Samuel: 2 · Shane: 1
 * **Agreed: 1.5 days** (aggregation query + staff-only page + export)
 
 ## Assumptions

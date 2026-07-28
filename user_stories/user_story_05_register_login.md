@@ -6,9 +6,8 @@ remembered — while still being able to check out as a guest.*
 ## Priority: P1 (highest) — Iteration 2
 
 ## Estimation: 1.5 days
-Planning poker:
-* Eti: 1 day
-* Kei: 2 days
+Planning poker (all four members):
+* Etigel: 1 · Kei: 2 · Samuel: 2 · Shane: 1
 * **Agreed: 1.5 days** (email-as-username and guest-checkout coexistence discussed)
 
 ## Assumptions
