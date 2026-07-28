@@ -8,7 +8,7 @@ remembered — while still being able to check out as a guest.*
 ## Estimation: 1.5 days
 Planning poker:
 * Eti: 1 day
-* Samuel: 2 days
+* Kei: 2 days
 * **Agreed: 1.5 days** (email-as-username and guest-checkout coexistence discussed)
 
 ## Assumptions

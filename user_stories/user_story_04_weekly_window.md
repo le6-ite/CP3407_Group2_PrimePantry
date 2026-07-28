@@ -10,7 +10,7 @@ sourced against demand, not stock).
 ## Estimation: 1.0 day
 Planning poker:
 * Eti: 1 day
-* Samuel: 1 day
+* Kei: 1 day
 * **Agreed: 1.0 day**
 
 ## Assumptions

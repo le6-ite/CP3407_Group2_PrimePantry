@@ -10,7 +10,7 @@ generously.
 ## Estimation: 2.5 days
 Planning poker:
 * Eti: 2 days
-* Samuel: 3 days
+* Kei: 3 days
 * **Agreed: 2.5 days** (Stripe integration + order model + confirmation are unknowns)
 
 ## Assumptions

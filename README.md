@@ -15,12 +15,12 @@ improving freshness, cutting waste and making premium ingredients affordable for
 
 ## Team
 
-> ⚠️ Replace the handles below with each member's full name and student ID before submitting.
+Group of 2–4 students (JCU CP3407, Group 2). *Add student IDs and any further members below.*
 
 | Member | GitHub | Main areas |
 |--------|--------|------------|
-| Eti | [@le6-ite](https://github.com/le6-ite) | Backend, storefront, checkout & payments, deployment |
-| Samuel | [@Eslezer](https://github.com/Eslezer) | Accounts, profiles, favourites, testing |
+| Tcydenov Etigel | [@le6-ite](https://github.com/le6-ite) | Backend, storefront, checkout & payments, deployment |
+| Kei Kwan Ip | [@Eslezer](https://github.com/Eslezer) | Accounts, profiles, favourites, testing |
 
 Instructor **Dmitry Konovalov** (`jc138691@gmail.com`) has been added as a collaborator to view the project.
 

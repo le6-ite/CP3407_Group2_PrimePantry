@@ -6,7 +6,7 @@ priority has to be exercised — the lowest-priority items sit in the *Not enoug
 
 **Priority** — `P1` = highest (must-have, build first), `P3` = lowest (nice-to-have).
 **Estimate** — ideal developer-days, agreed by planning poker (see each detailed story for the
-poker numbers). Estimators: **Eti** and **Samuel**.
+poker numbers). Estimators: **Eti** and **Kei**.
 
 Detailed stories live in [`user_stories/`](./user_stories/).
 

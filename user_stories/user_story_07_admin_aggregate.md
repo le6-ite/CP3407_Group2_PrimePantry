@@ -10,7 +10,7 @@ core operational payoff of the group-buying model.
 ## Estimation: 1.5 days
 Planning poker:
 * Eti: 1 day
-* Samuel: 2 days
+* Kei: 2 days
 * **Agreed: 1.5 days** (aggregation query + staff-only page + export)
 
 ## Assumptions

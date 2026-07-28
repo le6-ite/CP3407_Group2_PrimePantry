@@ -12,7 +12,7 @@ to (but not including) payment.
 1. GitHub entry timestamps ✔ (see the [commit history](https://github.com/le6-ite/CP3407_Group2_PrimePantry/commits/main))
 2. User stories are correct ✔ (see [backlog](./User_stories.md))
 
-- **Number of developers:** 2 (Eti, Samuel)
+- **Number of developers:** 2 (Eti, Kei)
 - **Assumed velocity (first iteration, estimated):** ~6 ideal dev-days
 - **Total estimated amount of work (committed):** 5.5 days
 
@@ -48,5 +48,5 @@ to (but not including) payment.
 
 - **Actual velocity:** 5.5 ideal dev-days delivered.
 - **Outcome:** all committed stories delivered; scope matched the plan. Estimates were slightly
-  conservative (Samuel's higher numbers), so the team pulled the payment epic forward into
+  conservative (Kei's higher numbers), so the team pulled the payment epic forward into
   Iteration 2 planning.

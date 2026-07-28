@@ -8,7 +8,7 @@ can review my order before paying.*
 ## Estimation: 1.5 days
 Planning poker:
 * Eti: 1 day
-* Samuel: 2 days
+* Kei: 2 days
 * **Agreed: 1.5 days** (session vs. DB cart discussed; session chosen for simplicity)
 
 ## Assumptions

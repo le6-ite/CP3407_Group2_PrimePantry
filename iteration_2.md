@@ -10,7 +10,7 @@ the **admin quantity aggregate (USP)**, and a deployed, containerised solution.
 
 - **Assumed velocity from Iteration 1:** 5.5 → the team dedicated full time this iteration, so
   planned capacity was raised to ~11 ideal dev-days across the 2 developers.
-- **Number of developers:** 2 (Eti, Samuel)
+- **Number of developers:** 2 (Eti, Kei)
 - **Total estimated amount of work (committed):** 11.0 days
 
 ## User stories committed
@@ -22,9 +22,9 @@ the **admin quantity aggregate (USP)**, and a deployed, containerised solution.
 | 8 | Order confirmation & my orders | P2 | 1.0 | Eti |
 | 9 | Admin: manage products & orders | P1 | 1.0 | Eti |
 | 10 | [Admin: total quantity ordered per product](./user_stories/user_story_07_admin_aggregate.md) *(USP)* | P1 | 1.5 | Eti |
-| 11 | Save profile & delivery preferences | P2 | 1.5 | Samuel |
-| 12 | Favourites / wishlist | P3 | 1.0 | Samuel |
-| 13 | Reorder a past order | P3 | 0.5 | Samuel |
+| 11 | Save profile & delivery preferences | P2 | 1.5 | Kei |
+| 12 | Favourites / wishlist | P3 | 1.0 | Kei |
+| 13 | Reorder a past order | P3 | 0.5 | Kei |
 | 14 | Export shopping list (CSV) | P3 | 0.5 | Eti |
 
 **Total: 11.0 days.**
@@ -35,7 +35,7 @@ the **admin quantity aggregate (USP)**, and a deployed, containerised solution.
 - `Order`/`OrderItem` models, order history, status badges — **completed 22 Jul (Eti)**
 - Register/login (by email), auth-aware header — **completed 22–23 Jul (Eti)**
 - Admin aggregate quantities (USP) + CSV export + order-status actions — **completed 23 Jul (Eti)**
-- `CustomerProfile`: saved details, favourites, reorder + **10 automated tests** — **completed 22–23 Jul (Samuel)**
+- `CustomerProfile`: saved details, favourites, reorder + **10 automated tests** — **completed 22–23 Jul (Kei)**
 - Containerised deployment to Hostinger VPS (Docker/Gunicorn) — **completed 23 Jul (Eti)**
 - Merge of the two developers' branches (no conflicts) — **23 Jul**
 - Production hardening: gunicorn workers, swap, Stripe key fix; end-to-end paid order **#PP-00016** — **completed 24 Jul (Eti)**

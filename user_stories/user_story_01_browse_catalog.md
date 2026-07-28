@@ -9,8 +9,8 @@ The catalog is the entry point to the whole shop; nothing can be bought without 
 ## Estimation: 1.5 days
 Planning poker (before Iteration 1):
 * Eti: 1 day
-* Samuel: 2 days
-* **Agreed: 1.5 days** (Samuel flagged image handling; Eti had done Django ORM listing before)
+* Kei: 2 days
+* **Agreed: 1.5 days** (Kei flagged image handling; Eti had done Django ORM listing before)
 
 ## Assumptions
 * Products and categories are seeded from a fixture.
