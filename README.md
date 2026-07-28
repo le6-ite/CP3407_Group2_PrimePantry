@@ -20,7 +20,7 @@ Group of 2–4 students (JCU CP3407, Group 2). *Add student IDs and any further 
 | Member | GitHub | Main areas |
 |--------|--------|------------|
 | Tcydenov Etigel | [@le6-ite](https://github.com/le6-ite) | Backend, storefront, checkout & payments, deployment |
-| Kei Kwan Ip | [@Eslezer](https://github.com/Eslezer) | Accounts, profiles, favourites, testing |
+| Kei Kwan Ip | [@KwanQueenie]([https://github.com/KwanQueenie]) | Accounts, profiles, favourites, testing |
 
 Instructor **Dmitry Konovalov** (`jc138691@gmail.com`) has been added as a collaborator to view the project.
 
