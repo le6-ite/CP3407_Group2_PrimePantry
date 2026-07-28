@@ -18,6 +18,7 @@ from django.utils import timezone
 from django.utils.http import url_has_allowed_host_and_scheme
 from django.views.decorators.http import require_POST
 
+from .emails import send_order_confirmation
 from .forms import CustomerProfileForm
 from .models import Category, CustomerProfile, Order, OrderItem, Product
 from .utils import cutoff_label, countdown_text, next_cutoff
@@ -336,6 +337,7 @@ def checkout_pay(request):
     if not settings.STRIPE_SECRET_KEY:
         order.status = Order.PAID
         order.save(update_fields=["status"])
+        send_order_confirmation(order)
         request.session["cart"] = {}
         request.session.modified = True
         return redirect(f"{reverse('store:order_confirmation')}?order={order.pk}")
@@ -400,6 +402,7 @@ def order_confirmation(request):
             if order.status != Order.PAID:
                 order.status = Order.PAID
                 order.save(update_fields=["status"])
+                send_order_confirmation(order)
                 request.session["cart"] = {}
                 request.session.modified = True
         elif order and order.status != Order.PAID:
